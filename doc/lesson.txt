@@ -1,0 +1,165 @@
+Lekcja 1
+
+1) Instalujemy Idea Intelij.
+
+2) Instalujemy Java JDK 8.
+
+3) Po zainstalowaniu robimy nowy projekt za pomoca String Initializera (https://start.spring.io/) bez zadnych dodatkowych bibliotek. Nazwa projektu: arena.
+
+4) W klasie ArenaApplication wycinanamy adnotacje odpowiedzialna za uruchomienie springa. Bedziemy korzystac na razie z czystej Javy.
+
+5) Tworzymy abstrakcyjna klase Creature.
+W klasie Creature definiujemy zmienne instancyjne:
+Integer strength
+Integer dexterity
+Integer initiative
+Integer velocity
+Integer endurance
+Integer numberOfAttacks
+Integer numberOfDodges
+Integer lifePoints
+
+6) Do wszystkich pol klasy Creature tworzymy gettery.
+
+7) Tworzymy konstruktor, ktory przyjmuje tyle parametrow, ile jest zmiennych instancyjnych i inicjuje wszystkie je inicjuje przekazanymi wartosciami.
+
+8) Dodajemy implementacje metody toString(), ktora powinna wypisac wszystkie parametry obiektu.
+
+9) Tworzymy klasy dziedziczące po Creature:
+Elf
+Human
+Halfing
+Troll
+Orc
+Dwarf
+
+10) W klasie ArenaApplication w funkcji main tworzymy instancję jednej z klas, ustawiamy wszystkie parametry wejsciowe i wywolujemy:
+System.out.println(obj); // obj jest nazwa stworzonego obiektu
+Po uruchomieniu aplikacji powinnismy zobaczyc na ekranie wszystkie parametry postaci.
+
+-----------------------
+
+Lekcja 2
+
+1) Stworz enum o nazwie CreatureType i dodaj do niego typy wszystkich postaci, ktore do tej pory zdefiniowalismy:
+HUMAN, ELF itd.
+Tutaj mozna poczytac o klasach typu Enum:
+https://javastart.pl/baza-wiedzy/darmowy-kurs-java/zaawansowane-programowanie/enum
+
+2) Zmien typ pola o nazwie creatureType w klasie Creature ze String na CreatureType
+
+3) Usun parametr creatureType ze wszystkich konstuktorow klas dziedziczacych po CreatureType.
+
+4) Uruchom ponownie ArenaApplication - aplikacja powinna zachowywać się bez zmian.
+
+Do poczytania:
+http://www.samouczekprogramisty.pl/typ-wyliczeniowy-w-jezyku-java/
+W artykule tym przeczytasz o typie wyliczeniowym. Poznasz słowo kluczowe enum. Na koniec czeka na Ciebie zestaw zadań, w którym przećwiczysz wiedzę z tego artykułu. Dowiesz się kiedy używamy typu enum. Napiszesz też prosty kalkulator w oparciu o Twój typ wyliczeniowy.
+
+
+-----------------------
+
+Lekcja 3
+
+1. W klasie CreatureFactory stworz metode, ktora dla zwroci losowy typ postaci.
+Sygnatura: CreatureType randomCreatureType()
+
+2. Stworz metode, ktora zwroci losowa liczbe z zadanego przedzialu.
+Sygnatura: int randomCreature(int min, int max)
+
+3. Wykorzystuj dwie powyzsze metody do napisanie kolejnej, ktora wygeneruje zadana liczbe losowych postaci o losowych parametrach.
+Sygnatura: List<Creature> randomCreatureList(int listSize)
+
+4. W ArenaApplication wywolaj randomCreatureList z wybranym przez siebie parametrem i wypisz wygenerowane postacie.
+
+5. Stworz nowa klase FightService z jedna publiczna metoda fight, ktora jako parametry bedzie przyjmowac dwie postaci i nie zwraca zadnego wyniku.
+
+6. Stworz nowa klase FightService z jedna publiczna metoda fight, ktora jako parametry bedzie przyjmowac dwie postaci i nie zwraca zadnego wyniku.
+
+7. Stworz nowy interfejs o nazwie Fightable i w tym interfejsie dodaj 2 metody:
+- attack, która przyjmuje 1 parametr typu Creature i zwraca liczbę zadanych obrazen
+- dodge, która przyjmuje 2 paramtry: liczbe potencjalnych obrazen oraz istote przed ktorej atakiem sie bronimy, metoda nic nie zwraca
+
+8. Zaimplementuj w klasie Creature interfejs Fightable:
+- attack:
+  atak udaje sie jesli dexterity atakujacego > losowa liczba z przedzialu [1, 10]
+  potencjalne obrazenia = strength + losowa liczba z przedzialu [0, 3]
+  jesli atak sie udal, funkcja zwraca potencjalne obrazenia, w przeciwnym przypadku zwraca 0
+  na ekranie wypisany zostaje wynik (czy atak sie udal i jakie sa potencjalne obrazenia)
+- dodge:
+  unik udaje sie jesli initiative > losowa liczba z przedzialu [1, 10]
+  jesli unik sie udal to wypisujemy na ekran, ze unik sie udal
+  w przeciwnym przypadku wyliczamy faktyczne obrazenia = potencjalne obrazenia - wytrzymalosc i jesli > 0 odejmujemy je od punktow zycia i wypisujemy na ekran stan faktyczny
+  na koniec sprawdzamy czy liczba punktow zycia > 0; jesli nie ofiara nie zyje i to tez wypisujemy na ekran
+
+9. Wygeneruj liste 2 losowych postaci i powtarzaj sekwecje:
+  creature1.attack
+  creature2.dodge
+  creature2.attack
+  creature1.dodge
+  az ktoras z postaci padnie w boju :)
+
+
+
+----------------------
+
+Lekcja 4
+
+1. Stworz nowy enum BodyPart z wartosciami HEAD, LEFT_ARM, RIGHT_ARM, TRUNK, LEFT_LEG, RIGHT_LEG.
+
+2. W każdej z części ciała zdefiniuj prawdopodobieństwo trafienia i premię za trafienie w tę część ciała:
+  HEAD - 5%, +3
+  LEFT_ARM, RIGHT_ARM - 10%, +1
+  TRUNK - 30%, 0pkt
+  LEFT_LEG, RIGHT_LEG - 5%, +2
+
+3. W klasie Creature zdefiniuj nowa metode, ktora zwroci trafiona czesc ciala zgodnie z powyzszymi prawdopodobieństwami.
+   Jeżeli żadna z części ciała nie została trafiona, powinien zostać rzucony wyjatek (sam decydujesz czy typu checked czy unchecked)
+   Jeśli powyższa implementacja będzie zbyt skomplikowana, na poczatek zaimplementuj to tak, zeby kazda czesc ciala (lub pudlo) wypadala z takim samym prawdopodobienstwem.
+
+4. Zmodyfikuj metode attack w taki sposób, aby jej logika wygladala nastepujaco:
+  Wylosuj trafiona czesc ciala
+  - jesli udalo sie w cos trafic wylicz potencjalne obrazenia jak do tej pory i dodaj premie za czesc ciala
+  - jesli nie udalo sie w nic trafic, sprobuj uderzyc ponownie - ponowne uderzenie udaje sie, jesli dexterity > wylosowana liczba z przedzialu 1-10
+  - zwroc wynik ataku (trafiona czesc ciala, potencjalne obrazenia, za ktorym razem sie udalo)
+  - wypisuj komunikaty informujace o tym co sie dzieje
+
+5. Zmodyfikuj metode fight w FightService, tak aby uwzgledniala nowy interfejs metody attack
+
+6. Rozszerz metode fight w klasie FightService w taki sposób, aby na koniec walki wyswietlala statystyki:
+  - Ile razy w trakcie zostala trafiona kazda czesc ciala
+  - Jaki byl najsilniejszy cios i kto go zadal
+  - Jaka czesc ciala byla trafiana najczesciej
+  UWAGA: Zadanie moze byc latwiejsze do implementacji, jesli zmienisz interfejs metody dodge
+
+7. Zaimplementuj losowanie trafienia w część ciała zgodna z podanymi prawdopodobienstami + napisz test, który zweryfikuje, ze metoda działa poprawnie.
+
+
+--------------------
+
+
+Lekcja 5
+
+1. Dodaj do zależności projektu (plik pom.xml) dodaj mockito-all.
+
+2. Napisz test, który zweryfikuje poprawność działania metody Creature.dodge.
+
+3. Zamodeluj w aplikacji pancerz, w taki sposób, aby możliwe było zdefiniowanie następujących typów pancerza:
+  - hełm - chroni głowę
+  - zbroja - chroni tułów
+  - rękawice - chronią ręce :)
+  - nagolenniki - chronią nogi
+  - tarcza - chroni wszystko
+  Każdy typ pancerza powinien też mieć określoną minimalną i maksymalną ochronę:
+  - hełm: 0-2
+  - zbroja: 0-4
+  - rękawice: 0-3
+  - nagolenniki: 0-2
+  - tarcza - 0-1
+
+4. Zmodyfikuj klasę Creature w taki sposób, aby każda istota mogła mieć dowolną ilość pancerza, przy czym nie może mieć dwóch sztuk tego samego.
+
+5. Zmodyfikuj metodę generującą losową postać w taki sposób, aby najpierw generowana była liczba sztuk pancerza, a następnie losowane były kolejne sztuki pancerza.
+
+6. Zmodyfikuj metodę dodge w taki sposób, aby przy wyliczaniu otrzymanych obrażeń była brana pod uwagę ochrona, którą daje pancerz.
+

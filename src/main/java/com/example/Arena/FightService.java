@@ -7,17 +7,17 @@ public class FightService {
         System.out.println("creature1: " + creature1);
         System.out.println("creature2: " + creature2);
 
-        int potentialDamage;
+        AttackResult attackResult;
         while (true) {
-            potentialDamage = creature1.attack(creature2);
-            creature2.dodge(potentialDamage, creature1);
+            attackResult = creature1.attack(creature2);
+            creature2.dodge(attackResult.getPotentialDamage(), creature1);
             if (creature2.getLifePoints() <= 0) {
                 System.out.println("Creature 1 won");
                 break;
             }
 
-            potentialDamage = creature2.attack(creature1);
-            creature1.dodge(potentialDamage, creature2);
+            attackResult = creature2.attack(creature1);
+            creature1.dodge(attackResult.getPotentialDamage(), creature2);
             if (creature1.getLifePoints() <= 0) {
                 System.out.println("Creature 2 won");
                 break;

@@ -81,18 +81,39 @@ public abstract class Creature implements Fightable {
     }
 
     @Override
-    public int attack(Creature creature) {
+    public AttackResult attack(Creature creature) {
         int potentialDamage = 0;
+        int attackCount = 1;
+        BodyPart bodyPart;
+        AttackResult attackResult = new AttackResult();
+
         int luckValue = random(1, 10);
 
-        if (creature.getDexterity() > luckValue) {
-            potentialDamage = getStrength() + random(0, 3);
-            displayText("Attack ended with success. Potential damage: " + potentialDamage);
-        } else {
-            displayText("Attack ended with failure. Potential damage: " + potentialDamage);
+        int bonus = 0;
+        String bodyPartInfo = "None";
+        try {
+            bodyPart = getBodyPartForHit();
+            bonus = bodyPart.getBonusPoints();
+            attackResult.setBodyPart(bodyPart);
+            bodyPartInfo = bodyPart.toString();
+        } catch (Exception e) {
+            // try second time
         }
 
-        return potentialDamage;
+        String msgAttackInfo = "Body part: " + bodyPartInfo +
+                ", Potential damage: " + potentialDamage +
+                ", attack count: " + attackCount;
+        if (creature.getDexterity() > luckValue) {
+            potentialDamage = getStrength() + random(0, 3) + bonus;
+
+            displayText("Attack ended with success. " + msgAttackInfo);
+        } else {
+            displayText("Attack ended with failure. " + msgAttackInfo);
+        }
+
+        attackResult.setAttackCount(attackCount);
+        attackResult.setPotentialDamage(potentialDamage);
+        return attackResult;
     }
 
     @Override
@@ -122,5 +143,20 @@ public abstract class Creature implements Fightable {
 
     private void displayText(String text) {
         System.out.println(text);
+    }
+
+    private BodyPart getBodyPartForHit() throws Exception {
+        // pseudo random :P
+        int number = random(1, 100);
+
+        int sum = 0;
+        for (BodyPart bodyPart : BodyPart.values()) {
+            sum += bodyPart.getProbability();
+            if (number <= sum) {
+                return bodyPart;
+            }
+        }
+
+        throw new Exception("No body part to hit");
     }
 }
