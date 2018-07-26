@@ -1,6 +1,8 @@
 package com.example.Arena;
 
-public abstract class Creature {
+import java.util.Random;
+
+public abstract class Creature implements Fightable {
     private Integer strength;
     private Integer dexterity;
     private Integer initiative;
@@ -76,5 +78,49 @@ public abstract class Creature {
                 ", lifePoints=" + lifePoints +
                 ", type='" + type + '\'' +
                 '}' + super.toString();
+    }
+
+    @Override
+    public int attack(Creature creature) {
+        int potentialDamage = 0;
+        int luckValue = random(1, 10);
+
+        if (creature.getDexterity() > luckValue) {
+            potentialDamage = getStrength() + random(0, 3);
+            displayText("Attack ended with success. Potential damage: " + potentialDamage);
+        } else {
+            displayText("Attack ended with failure. Potential damage: " + potentialDamage);
+        }
+
+        return potentialDamage;
+    }
+
+    @Override
+    public void dodge(int potentialDamage, Creature attackingCreature) {
+        int luckValue = random(1, 10);
+
+        if (attackingCreature.getInitiative() > luckValue) {
+            int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() : 0;
+            if (actualDamage > 0) {
+                lifePoints -= actualDamage;
+            }
+
+            displayText("Dodge ended with failure. Damage: " + actualDamage + ". Life points left: " + lifePoints);
+            if (lifePoints <= 0) {
+                displayText("Creature DEAD!!!");
+            }
+        } else {
+            displayText("Dodge ended with success.");
+        }
+    }
+
+    private int random(int min, int max) {
+        Random r = new Random();
+
+        return r.nextInt((max - min) + 1) + min;
+    }
+
+    private void displayText(String text) {
+        System.out.println(text);
     }
 }
