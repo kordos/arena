@@ -13,6 +13,8 @@ public abstract class Creature implements Fightable {
     private Integer lifePoints;
     private CreatureType type;
 
+    private RandomUtil randomUtil;
+
     public Creature(Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints, CreatureType type) {
         this.strength = strength;
         this.dexterity = dexterity;
@@ -65,6 +67,10 @@ public abstract class Creature implements Fightable {
         this.type = type;
     }
 
+    public void setRandomUtil(RandomUtil randomUtil) {
+        this.randomUtil = randomUtil;
+    }
+
     @Override
     public String toString() {
         return "Creature{" +
@@ -81,7 +87,7 @@ public abstract class Creature implements Fightable {
     }
 
     @Override
-    public AttackResult attack(Creature creature) {
+    public AttackResult attack() {
         int potentialDamage = 0;
         int attackCount = 1;
         BodyPart bodyPart;
@@ -97,13 +103,13 @@ public abstract class Creature implements Fightable {
             attackResult.setBodyPart(bodyPart);
             bodyPartInfo = bodyPart.toString();
         } catch (Exception e) {
-            // try second time
+            // TODO try second time
         }
 
         String msgAttackInfo = "Body part: " + bodyPartInfo +
                 ", Potential damage: " + potentialDamage +
                 ", attack count: " + attackCount;
-        if (creature.getDexterity() > luckValue) {
+        if (getDexterity() > luckValue) {
             potentialDamage = getStrength() + random(0, 3) + bonus;
 
             displayText("Attack ended with success. " + msgAttackInfo);
@@ -117,11 +123,14 @@ public abstract class Creature implements Fightable {
     }
 
     @Override
-    public DodgeResult dodge(int potentialDamage, Creature attackingCreature) {
+    public DodgeResult dodge(int potentialDamage) {
         DodgeResult result = new DodgeResult();
 
         int luckValue = random(1, 10);
-        if (attackingCreature.getInitiative() > luckValue) {
+        if (getInitiative() > luckValue) {
+            result.setSuccess(true);
+            displayText("Dodge ended with success.");
+        } else {
             result.setSuccess(false);
             int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() : 0;
 
@@ -134,18 +143,18 @@ public abstract class Creature implements Fightable {
             if (lifePoints <= 0) {
                 displayText("Creature DEAD!!!");
             }
-        } else {
-            result.setSuccess(true);
-            displayText("Dodge ended with success.");
         }
 
         return result;
     }
 
     private int random(int min, int max) {
-        Random r = new Random();
+        if (randomUtil == null) {
+            Random r = new Random();
+            return r.nextInt((max - min) + 1) + min;
+        }
 
-        return r.nextInt((max - min) + 1) + min;
+        return randomUtil.random(min, max);
     }
 
     private void displayText(String text) {
@@ -153,7 +162,6 @@ public abstract class Creature implements Fightable {
     }
 
     private BodyPart getBodyPartForHit() throws Exception {
-        // pseudo random :P
         int number = random(1, 100);
 
         int sum = 0;
@@ -165,5 +173,10 @@ public abstract class Creature implements Fightable {
         }
 
         throw new Exception("No body part to hit");
+    }
+
+    @Override
+    public boolean isAlive() {
+        return lifePoints > 0;
     }
 }

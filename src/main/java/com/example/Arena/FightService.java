@@ -17,16 +17,16 @@ public class FightService {
         AttackResult attackResult;
         DodgeResult dodgeResult;
         while (true) {
-            attackResult = creature1.attack(creature2);
-            dodgeResult = creature2.dodge(attackResult.getPotentialDamage(), creature1);
+            attackResult = creature1.attack();
+            dodgeResult = creature2.dodge(attackResult.getPotentialDamage());
             updateStatistics(attackResult, dodgeResult, creature1);
             if (creature2.getLifePoints() <= 0) {
                 System.out.println("Creature 1 won");
                 break;
             }
 
-            attackResult = creature2.attack(creature1);
-            dodgeResult = creature1.dodge(attackResult.getPotentialDamage(), creature2);
+            attackResult = creature2.attack();
+            dodgeResult = creature1.dodge(attackResult.getPotentialDamage());
             updateStatistics(attackResult, dodgeResult, creature2);
             if (creature1.getLifePoints() <= 0) {
                 System.out.println("Creature 2 won");
