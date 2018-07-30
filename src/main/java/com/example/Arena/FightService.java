@@ -1,6 +1,13 @@
 package com.example.Arena;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FightService {
+    private Map<BodyPart, Integer> bodyPartHit = new HashMap<>();
+
+    private int strongestHit = 0;
+    private String strongestHitInfo;
 
     void fight(Creature creature1, Creature creature2) {
         System.out.println("Fight between two creatures: ");
@@ -8,20 +15,56 @@ public class FightService {
         System.out.println("creature2: " + creature2);
 
         AttackResult attackResult;
+        DodgeResult dodgeResult;
         while (true) {
             attackResult = creature1.attack(creature2);
-            creature2.dodge(attackResult.getPotentialDamage(), creature1);
+            dodgeResult = creature2.dodge(attackResult.getPotentialDamage(), creature1);
+            updateStatistics(attackResult, dodgeResult, creature1);
             if (creature2.getLifePoints() <= 0) {
                 System.out.println("Creature 1 won");
                 break;
             }
 
             attackResult = creature2.attack(creature1);
-            creature1.dodge(attackResult.getPotentialDamage(), creature2);
+            dodgeResult = creature1.dodge(attackResult.getPotentialDamage(), creature2);
+            updateStatistics(attackResult, dodgeResult, creature2);
             if (creature1.getLifePoints() <= 0) {
                 System.out.println("Creature 2 won");
                 break;
             }
         }
+
+        printStatistics();
+    }
+
+    private void updateStatistics(AttackResult attackResult, DodgeResult dodgeResult, Creature attackingCreature) {
+        if (dodgeResult.isSuccess()) {
+            return;
+        }
+
+        int damage = dodgeResult.getDamage();
+        if (damage > strongestHit) {
+            strongestHit = damage;
+            strongestHitInfo = "Strongest hit: " + damage + " by: " + attackingCreature;
+        }
+
+        int bodyPartHitCount = bodyPartHit.getOrDefault(attackResult.getBodyPart(), 0);
+        bodyPartHit.put(attackResult.getBodyPart(), ++bodyPartHitCount);
+    }
+
+    private void printStatistics() {
+        System.out.println("Statistics of fight:");
+        System.out.println(strongestHitInfo);
+        System.out.println("Body parts statistics:");
+        int hitMost = 0;
+        BodyPart hitMostBodyPart = null;
+        for (Map.Entry bodyPartEntry : bodyPartHit.entrySet()) {
+            System.out.println(bodyPartEntry.getKey() + ", hit count: " + bodyPartEntry.getValue());
+            if ((int)bodyPartEntry.getValue() > hitMost) {
+                hitMost = (int)bodyPartEntry.getValue();
+                hitMostBodyPart = (BodyPart) bodyPartEntry.getKey();
+            }
+        }
+        System.out.println("Body part with most hit: " + hitMostBodyPart + ", count: " + hitMost);
     }
 }

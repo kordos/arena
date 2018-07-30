@@ -4,5 +4,5 @@ public interface Fightable {
 
     AttackResult attack(Creature creature);
 
-    void dodge(int potentialDamage, Creature attackingCreature);
+    DodgeResult dodge(int potentialDamage, Creature attackingCreature);
 }

@@ -117,12 +117,16 @@ public abstract class Creature implements Fightable {
     }
 
     @Override
-    public void dodge(int potentialDamage, Creature attackingCreature) {
-        int luckValue = random(1, 10);
+    public DodgeResult dodge(int potentialDamage, Creature attackingCreature) {
+        DodgeResult result = new DodgeResult();
 
+        int luckValue = random(1, 10);
         if (attackingCreature.getInitiative() > luckValue) {
+            result.setSuccess(false);
             int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() : 0;
+
             if (actualDamage > 0) {
+                result.setDamage(actualDamage);
                 lifePoints -= actualDamage;
             }
 
@@ -131,8 +135,11 @@ public abstract class Creature implements Fightable {
                 displayText("Creature DEAD!!!");
             }
         } else {
+            result.setSuccess(true);
             displayText("Dodge ended with success.");
         }
+
+        return result;
     }
 
     private int random(int min, int max) {
