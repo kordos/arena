@@ -18,7 +18,8 @@ public class CreatureTest {
 
         dodgingCreature.setRandomUtil(randomUtil);
 
-        DodgeResult dodgeResult = dodgingCreature.dodge(potentialDamage);
+        AttackResult attackResult = new AttackResult(null, potentialDamage, 1);
+        DodgeResult dodgeResult = dodgingCreature.dodge(attackResult);
 
         assertFalse(dodgeResult.isSuccess());
     }
@@ -35,7 +36,8 @@ public class CreatureTest {
 
         dodgingCreature.setRandomUtil(randomUtil);
 
-        DodgeResult dodgeResult = dodgingCreature.dodge(potentialDamage);
+        AttackResult attackResult = new AttackResult(null, potentialDamage, 1);
+        DodgeResult dodgeResult = dodgingCreature.dodge(attackResult);
 
         assertTrue(dodgeResult.isSuccess());
     }

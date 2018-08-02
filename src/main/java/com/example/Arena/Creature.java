@@ -1,6 +1,7 @@
 package com.example.Arena;
 
 import java.util.Random;
+import java.util.Set;
 
 public abstract class Creature implements Fightable {
     private Integer strength;
@@ -14,6 +15,8 @@ public abstract class Creature implements Fightable {
     private CreatureType type;
 
     private RandomUtil randomUtil;
+
+    private Set<ArmourType> armour;
 
     public Creature(Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints, CreatureType type) {
         this.strength = strength;
@@ -71,6 +74,14 @@ public abstract class Creature implements Fightable {
         this.randomUtil = randomUtil;
     }
 
+    public Set<ArmourType> getArmour() {
+        return armour;
+    }
+
+    public void addArmour(Set<ArmourType> armour) {
+        this.armour = armour;
+    }
+
     @Override
     public String toString() {
         return "Creature{" +
@@ -82,7 +93,8 @@ public abstract class Creature implements Fightable {
                 ", numberOfAttacks=" + numberOfAttacks +
                 ", numberOfDodges=" + numberOfDodges +
                 ", lifePoints=" + lifePoints +
-                ", type='" + type + '\'' +
+                ", type=" + type +
+                ", armour" + armour +
                 '}' + super.toString();
     }
 
@@ -123,7 +135,9 @@ public abstract class Creature implements Fightable {
     }
 
     @Override
-    public DodgeResult dodge(int potentialDamage) {
+    public DodgeResult dodge(AttackResult attackResult) {
+        int potentialDamage = attackResult.getPotentialDamage();
+
         DodgeResult result = new DodgeResult();
 
         int luckValue = random(1, 10);
@@ -132,14 +146,19 @@ public abstract class Creature implements Fightable {
             displayText("Dodge ended with success.");
         } else {
             result.setSuccess(false);
-            int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() : 0;
+            // get armour number
+            int armourProtection = getArmourProtection(attackResult.getBodyPart());
+            int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() - armourProtection : 0;
 
             if (actualDamage > 0) {
                 result.setDamage(actualDamage);
                 lifePoints -= actualDamage;
             }
 
-            displayText("Dodge ended with failure. Damage: " + actualDamage + ". Life points left: " + lifePoints);
+            displayText(
+                "Dodge ended with failure. Armour protection: " + armourProtection + ", Damage: " + actualDamage +
+                ". Life points left: " + lifePoints
+            );
             if (lifePoints <= 0) {
                 displayText("Creature DEAD!!!");
             }
@@ -178,5 +197,24 @@ public abstract class Creature implements Fightable {
     @Override
     public boolean isAlive() {
         return lifePoints > 0;
+    }
+
+    private int getArmourProtection(BodyPart bodyPartToHit) {
+        // simple for implementation
+        int protection = 0;
+        for (ArmourType armourEntry : armour) {
+            if (armourEntry.getProtectedBodyPart().contains(bodyPartToHit)) {
+                protection += random(armourEntry.getMinProtection(), armourEntry.getMaxProtection());
+            }
+        }
+
+        // stream implementation
+        protection = armour
+            .stream()
+            .filter(item -> item.getProtectedBodyPart().contains(bodyPartToHit))
+            .mapToInt(item -> random(item.getMinProtection(), item.getMaxProtection()))
+            .sum();
+
+        return protection;
     }
 }

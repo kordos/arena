@@ -4,7 +4,7 @@ public interface Fightable {
 
     AttackResult attack();
 
-    DodgeResult dodge(int potentialDamage);
+    DodgeResult dodge(AttackResult attackResult);
 
     boolean isAlive();
 }

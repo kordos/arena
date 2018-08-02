@@ -1,8 +1,6 @@
 package com.example.Arena;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class CreaturesFactory {
 
@@ -39,6 +37,8 @@ public class CreaturesFactory {
                 break;
         }
 
+        creature.addArmour(generateArmour());
+
         return creature;
     }
 
@@ -66,6 +66,27 @@ public class CreaturesFactory {
         List<Creature> result = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
             result.add(randomCreature());
+        }
+
+        return result;
+    }
+
+    private Set<ArmourType> generateArmour() {
+        int armourMinNumber = 0;
+        ArmourType[] armourTypes = ArmourType.values();
+        int armourMaxNumber = armourTypes.length;
+        HashSet<ArmourType> result = new HashSet<>();
+
+        int armourCount = random(armourMinNumber, armourMaxNumber);
+        for (int i = 0; i < armourCount; i++) {
+            int armourNumber = random(0, armourMaxNumber - 1);
+
+            if (result.contains(armourTypes[armourNumber])) {
+                armourCount ++;
+                continue;
+            }
+
+            result.add(armourTypes[armourNumber]);
         }
 
         return result;

@@ -16,9 +16,12 @@ public class FightService {
 
         AttackResult attackResult;
         DodgeResult dodgeResult;
+        int roundCount = 0;
         while (true) {
+            roundCount++;
+
             attackResult = creature1.attack();
-            dodgeResult = creature2.dodge(attackResult.getPotentialDamage());
+            dodgeResult = creature2.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature1);
             if (creature2.getLifePoints() <= 0) {
                 System.out.println("Creature 1 won");
@@ -26,7 +29,7 @@ public class FightService {
             }
 
             attackResult = creature2.attack();
-            dodgeResult = creature1.dodge(attackResult.getPotentialDamage());
+            dodgeResult = creature1.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature2);
             if (creature1.getLifePoints() <= 0) {
                 System.out.println("Creature 2 won");
@@ -34,6 +37,7 @@ public class FightService {
             }
         }
 
+        System.out.println("Round count: " + roundCount);
         printStatistics();
     }
 
