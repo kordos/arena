@@ -1,12 +1,20 @@
 package com.example.Arena;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@SpringBootApplication
 public class ArenaApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
+        SpringApplication.run(ArenaApplication.class, args);
+    }
+
+	public static void mainOld() {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
 //        int listSize = 6;

@@ -1,8 +1,11 @@
 package com.example.Arena;
 
+import lombok.Getter;
+
 import java.util.Random;
 import java.util.Set;
 
+@Getter
 public abstract class Creature implements Fightable {
     private Integer strength;
     private Integer dexterity;
@@ -28,42 +31,6 @@ public abstract class Creature implements Fightable {
         this.numberOfDodges = numberOfDodges;
         this.lifePoints = lifePoints;
         this.type = type;
-    }
-
-    public Integer getStrength() {
-        return strength;
-    }
-
-    public Integer getDexterity() {
-        return dexterity;
-    }
-
-    public Integer getInitiative() {
-        return initiative;
-    }
-
-    public Integer getVelocity() {
-        return velocity;
-    }
-
-    public Integer getEndurance() {
-        return endurance;
-    }
-
-    public Integer getNumberOfAttacks() {
-        return numberOfAttacks;
-    }
-
-    public Integer getNumberOfDodges() {
-        return numberOfDodges;
-    }
-
-    public Integer getLifePoints() {
-        return lifePoints;
-    }
-
-    public CreatureType getType() {
-        return type;
     }
 
     public void setType(CreatureType type) {
