@@ -1,7 +1,7 @@
 package com.example.Arena.controller;
 
 
-import com.example.Arena.BodyPart;
+import com.example.Arena.Service.MissingTournamentException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +34,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleWrongRequestException(WrongRequestException ex) {
 
         ArenaApiError arenaApiError = new ArenaApiError(HttpStatus.BAD_REQUEST, "Wrong request!", ex.getMessage());
+        return new ResponseEntity<>(arenaApiError, arenaApiError.getHttpStatus());
+    }
+
+    @ExceptionHandler(MissingTournamentException.class)
+    protected ResponseEntity<Object> handleMissingTournamentException(MissingTournamentException ex) {
+
+        ArenaApiError arenaApiError = new ArenaApiError(HttpStatus.NOT_FOUND, ex.getMessage(), "");
         return new ResponseEntity<>(arenaApiError, arenaApiError.getHttpStatus());
     }
 }
