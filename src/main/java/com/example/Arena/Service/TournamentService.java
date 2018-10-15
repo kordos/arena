@@ -1,32 +1,63 @@
 package com.example.Arena.Service;
 
-import com.example.Arena.Data.Tournament;
+import com.example.Arena.Creature;
+import com.example.Arena.Data.CreatureEntity;
+import com.example.Arena.Data.CreatureRepository;
+import com.example.Arena.Data.TournamentEntity;
 import com.example.Arena.Data.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 public class TournamentService {
 
     @Autowired
-    private TournamentRepository repository;
+    private TournamentRepository tournamentRepository;
 
-    public Tournament get(int id) throws MissingTournamentException {
-        Optional result = repository.findById(id);
+    @Autowired
+    private CreatureRepository creatureRepository;
+
+    public TournamentEntity get(int id) throws MissingTournamentException {
+        Optional result = tournamentRepository.findById(id);
         if (!result.isPresent()) {
-            throw new MissingTournamentException("Tournament does not exits");
+            throw new MissingTournamentException("TournamentEntity does not exits");
         }
 
-        return (Tournament)result.get();
+        return (TournamentEntity)result.get();
     }
 
-    public Tournament save(int capacity, int points) {
-        Tournament tournament = new Tournament();
-        tournament.setCapacity(capacity);
-        tournament.setPoints(points);
+    public TournamentEntity save(int capacity, int points) {
+        TournamentEntity tournamentEntity = new TournamentEntity();
+        tournamentEntity.setCapacity(capacity);
+        tournamentEntity.setPoints(points);
 
-        return repository.save(tournament);
+        return tournamentRepository.save(tournamentEntity);
+    }
+
+    public void addCreature(int tournamentId, Creature creature) throws MissingTournamentException {
+
+        TournamentEntity tournamentEntity = get(tournamentId);
+
+        //create entity
+        CreatureEntity creatureEntity = new CreatureEntity();
+        creatureEntity.setLifePoints(creature.getLifePoints());
+        creatureEntity.setStrength(creature.getStrength());
+
+        creatureEntity.setTournamentEntity(tournamentEntity);
+
+        // add to list
+        Set<CreatureEntity> creatures = tournamentEntity.getCreatures();
+        creatures.add(creatureEntity);
+
+//        for (creatures) {
+//            creatureRepository.save(creature1);
+//        }
+
+        // save
+        tournamentEntity.setCreatures(creatures);
+        tournamentRepository.save(tournamentEntity);
     }
 }

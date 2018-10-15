@@ -18,7 +18,7 @@ public class ArenaApplication {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
 //        int listSize = 6;
-//        List<Creature> randomCreatureList = creaturesFactory.randomCreatureList(listSize);
+//        List<CreatureEntity> randomCreatureList = creaturesFactory.randomCreatureList(listSize);
 //
 //        int generatedNumber = randomCreatureList.toArray().length;
 //        System.out.println("Random list of Creatures, count: " + randomCreatureList.toArray().length);

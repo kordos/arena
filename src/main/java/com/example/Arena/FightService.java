@@ -24,7 +24,7 @@ public class FightService {
             dodgeResult = creature2.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature1);
             if (creature2.getLifePoints() <= 0) {
-                System.out.println("Creature 1 won");
+                System.out.println("CreatureEntity 1 won");
                 break;
             }
 
@@ -32,7 +32,7 @@ public class FightService {
             dodgeResult = creature1.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature2);
             if (creature1.getLifePoints() <= 0) {
-                System.out.println("Creature 2 won");
+                System.out.println("CreatureEntity 2 won");
                 break;
             }
         }

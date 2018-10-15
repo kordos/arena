@@ -51,7 +51,7 @@ public abstract class Creature implements Fightable {
 
     @Override
     public String toString() {
-        return "Creature{" +
+        return "CreatureEntity{" +
                 "strength=" + strength +
                 ", dexterity=" + dexterity +
                 ", initiative=" + initiative +
@@ -127,7 +127,7 @@ public abstract class Creature implements Fightable {
                 ". Life points left: " + lifePoints
             );
             if (lifePoints <= 0) {
-                displayText("Creature DEAD!!!");
+                displayText("CreatureEntity DEAD!!!");
             }
         }
 
