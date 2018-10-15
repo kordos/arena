@@ -14,8 +14,7 @@ public class Tournament {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-//    private Integer capacity2;
+    private Integer capacity;
     private Integer points;
-
 }
 
