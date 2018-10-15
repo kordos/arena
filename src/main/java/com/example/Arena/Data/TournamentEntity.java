@@ -3,7 +3,8 @@ package com.example.Arena.Data;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class TournamentEntity {
     private Integer capacity;
     private Integer points;
 
-    @OneToMany(mappedBy="tournamentEntity", cascade = CascadeType.PERSIST)
-    private Set<CreatureEntity> creatures;
+    @OneToMany(mappedBy="tournamentEntity", cascade = CascadeType.ALL)
+    private List<CreatureEntity> creatures = new ArrayList<>();
 }
 
