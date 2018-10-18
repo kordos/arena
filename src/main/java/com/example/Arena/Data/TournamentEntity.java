@@ -19,5 +19,10 @@ public class TournamentEntity {
 
     @OneToMany(mappedBy="tournamentEntity", cascade = CascadeType.ALL)
     private List<CreatureEntity> creatures = new ArrayList<>();
+
+    public void addCreature(CreatureEntity creatureEntity) {
+        creatureEntity.setTournamentEntity(this);
+        creatures.add(creatureEntity);
+    }
 }
 

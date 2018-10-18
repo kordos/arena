@@ -2,12 +2,12 @@ package com.example.Arena.Service;
 
 import com.example.Arena.Creature;
 import com.example.Arena.Data.CreatureEntity;
+import com.example.Arena.Data.CreatureRepository;
 import com.example.Arena.Data.TournamentEntity;
 import com.example.Arena.Data.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -15,6 +15,9 @@ public class TournamentService {
 
     @Autowired
     private TournamentRepository tournamentRepository;
+
+    @Autowired
+    private CreatureRepository creatureRepository;
 
     public TournamentEntity get(int id) throws MissingTournamentException {
         Optional result = tournamentRepository.findById(id);
@@ -33,7 +36,7 @@ public class TournamentService {
         return tournamentRepository.save(tournamentEntity);
     }
 
-    public void addCreature(int tournamentId, Creature creature) throws MissingTournamentException {
+    public int addCreature(int tournamentId, Creature creature) throws MissingTournamentException {
 
         TournamentEntity tournamentEntity = get(tournamentId);
 
@@ -41,14 +44,21 @@ public class TournamentService {
         CreatureEntity creatureEntity = new CreatureEntity();
         creatureEntity.setLifePoints(creature.getLifePoints());
         creatureEntity.setStrength(creature.getStrength());
+        creatureEntity.setDexterity(creature.getDexterity());
+        creatureEntity.setInitiative(creature.getInitiative());
+        creatureEntity.setVelocity(creature.getVelocity());
+        creatureEntity.setEndurance(creature.getEndurance());
+        creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
+        creatureEntity.setNumberOfDodges(creature.getNumberOfDodges());
 
+        // add creature to list
+        //v1 not passing id to creatureEntity object
+        //tournamentEntity.addCreature(creatureEntity);
+        //tournamentRepository.save(tournamentEntity);
+        //v2
         creatureEntity.setTournamentEntity(tournamentEntity);
+        creatureRepository.save(creatureEntity);
 
-        // add to list
-        List<CreatureEntity> creatures = tournamentEntity.getCreatures();
-        creatures.add(creatureEntity);
-
-        // save
-        tournamentRepository.save(tournamentEntity);
+        return creatureEntity.getId();
     }
 }

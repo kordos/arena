@@ -53,25 +53,26 @@ public class TournamentController {
     }
 
     @RequestMapping(value = "/tournaments/{id}/creatures", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
-    public AddCreatureToTournamentDto addCreatureToTournament(
-            @PathVariable("id") int id,
+    public ResponseEntity addCreatureToTournament(
+            @PathVariable("id") int tournamentId,
             @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
     ) throws MissingTournamentException {
-        //201 created / exception
-
+        // TODO create from passed type
         Creature creature = new Elf(
-                addCreatureToTournamentDto.getStrength(),
-                addCreatureToTournamentDto.getDexterity(),
-                addCreatureToTournamentDto.getInitiative(),
-                addCreatureToTournamentDto.getVelocity(),
-                addCreatureToTournamentDto.getEndurance(),
-                addCreatureToTournamentDto.getNumberOfAttacks(),
-                addCreatureToTournamentDto.getNumberOfDodges(),
-                addCreatureToTournamentDto.getLifePoints()
+            addCreatureToTournamentDto.getStrength(),
+            addCreatureToTournamentDto.getDexterity(),
+            addCreatureToTournamentDto.getInitiative(),
+            addCreatureToTournamentDto.getVelocity(),
+            addCreatureToTournamentDto.getEndurance(),
+            addCreatureToTournamentDto.getNumberOfAttacks(),
+            addCreatureToTournamentDto.getNumberOfDodges(),
+            addCreatureToTournamentDto.getLifePoints()
         );
 
-        tournamentService.addCreature(id, creature);
+        int creatureId = tournamentService.addCreature(tournamentId, creature);
 
-        return addCreatureToTournamentDto;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/tournaments/" + tournamentId + "/creatures/" + creatureId));
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 }
