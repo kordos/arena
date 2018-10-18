@@ -49,7 +49,7 @@ public class TournamentService {
         creatureEntity.setVelocity(creature.getVelocity());
         creatureEntity.setEndurance(creature.getEndurance());
         creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
-        creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
+        creatureEntity.setNumberOfDodges(creature.getNumberOfDodges());
         creatureEntity.setType(creature.getType().name());
 
         // add creature to list

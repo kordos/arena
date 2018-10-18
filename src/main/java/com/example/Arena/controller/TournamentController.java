@@ -1,7 +1,6 @@
 package com.example.Arena.controller;
 
 import com.example.Arena.Creature;
-import com.example.Arena.CreatureType;
 import com.example.Arena.CreaturesFactory;
 import com.example.Arena.Data.TournamentEntity;
 import com.example.Arena.Service.MissingTournamentException;
@@ -62,21 +61,8 @@ public class TournamentController {
             @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
     ) throws MissingTournamentException {
 
-        //TODO change validation
-        CreatureType creatureType = null;
-        for (CreatureType type : CreatureType.values()) {
-            if (type.name().equals(addCreatureToTournamentDto.getType())) {
-                creatureType = type;
-                break;
-            }
-        }
-        if (null == creatureType) {
-            throw new IllegalArgumentException("Wrong value for type");
-        }
-
-        // TODO create from passed type
         Creature creature = creaturesFactory.createCreature(
-            creatureType,
+            addCreatureToTournamentDto.getType(),
             addCreatureToTournamentDto.getStrength(),
             addCreatureToTournamentDto.getDexterity(),
             addCreatureToTournamentDto.getInitiative(),

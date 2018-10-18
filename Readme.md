@@ -18,7 +18,7 @@ Body:
 ```json
 {
 	"lifePoints": 10,
-	"strength": 20,
+	"strength": 7,
 	"dexterity": 10,
 	"initiative": 5,
 	"velocity": 3,
