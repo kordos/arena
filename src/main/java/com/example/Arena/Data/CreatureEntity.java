@@ -27,6 +27,7 @@ public class CreatureEntity {
     private Integer numberOfAttacks;
     private Integer numberOfDodges;
 
-
+    // creature type
+    private String type;
 }
 

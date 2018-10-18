@@ -1,11 +1,13 @@
 package com.example.Arena;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class CreaturesFactory {
 
     Creature generate(CreatureType type) {
-        Creature creature = null;
 
         int strength = random(1, 10);
         int dexterity = random(1, 10);
@@ -16,22 +18,28 @@ public class CreaturesFactory {
         int numberOfDodges = random(1, 10);
         int lifePoints = random(1, 10);
 
+        return createCreature(type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+    }
+
+    public Creature createCreature(CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
+        Creature creature = null;
+
         switch (type) {
             case ELF:
                 creature = new Elf(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-            break;
+                break;
             case DWARF:
                 creature = new Dwarf(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-            break;
+                break;
             case HALFING:
                 creature = new Halfing(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-            break;
+                break;
             case ORC:
                 creature = new Orc(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-            break;
+                break;
             case TROLL:
                 creature = new Troll(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-            break;
+                break;
             case HUMAN:
                 creature = new Human(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;

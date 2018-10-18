@@ -1,8 +1,9 @@
 package com.example.Arena.controller;
 
 import com.example.Arena.Creature;
+import com.example.Arena.CreatureType;
+import com.example.Arena.CreaturesFactory;
 import com.example.Arena.Data.TournamentEntity;
-import com.example.Arena.Elf;
 import com.example.Arena.Service.MissingTournamentException;
 import com.example.Arena.Service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class TournamentController {
 
     @Autowired
     private TournamentService tournamentService;
+
+    @Autowired
+    private CreaturesFactory creaturesFactory;
 
     @RequestMapping("/tournaments")
     public String getTournaments() {
@@ -57,8 +61,22 @@ public class TournamentController {
             @PathVariable("id") int tournamentId,
             @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
     ) throws MissingTournamentException {
+
+        //TODO change validation
+        CreatureType creatureType = null;
+        for (CreatureType type : CreatureType.values()) {
+            if (type.name().equals(addCreatureToTournamentDto.getType())) {
+                creatureType = type;
+                break;
+            }
+        }
+        if (null == creatureType) {
+            throw new IllegalArgumentException("Wrong value for type");
+        }
+
         // TODO create from passed type
-        Creature creature = new Elf(
+        Creature creature = creaturesFactory.createCreature(
+            creatureType,
             addCreatureToTournamentDto.getStrength(),
             addCreatureToTournamentDto.getDexterity(),
             addCreatureToTournamentDto.getInitiative(),

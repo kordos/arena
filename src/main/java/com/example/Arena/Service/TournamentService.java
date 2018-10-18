@@ -49,7 +49,8 @@ public class TournamentService {
         creatureEntity.setVelocity(creature.getVelocity());
         creatureEntity.setEndurance(creature.getEndurance());
         creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
-        creatureEntity.setNumberOfDodges(creature.getNumberOfDodges());
+        creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
+        creatureEntity.setType(creature.getType().name());
 
         // add creature to list
         //v1 not passing id to creatureEntity object

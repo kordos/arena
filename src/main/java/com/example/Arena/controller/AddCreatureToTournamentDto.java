@@ -19,4 +19,7 @@ class AddCreatureToTournamentDto {
     private Integer endurance;
     private Integer numberOfAttacks;
     private Integer numberOfDodges;
+
+    @NotNull
+    private String type;
 }
