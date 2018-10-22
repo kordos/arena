@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name="tournament")
-public class TournamentEntity {
+class TournamentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

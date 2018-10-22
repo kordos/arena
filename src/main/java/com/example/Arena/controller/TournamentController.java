@@ -1,9 +1,8 @@
 package com.example.Arena.controller;
 
 import com.example.Arena.Creature;
-import com.example.Arena.CreaturesFactory;
-import com.example.Arena.Data.TournamentEntity;
 import com.example.Arena.Service.MissingTournamentException;
+import com.example.Arena.Service.Tournament;
 import com.example.Arena.Service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,7 @@ public class TournamentController {
     private TournamentService tournamentService;
 
     @Autowired
-    private CreaturesFactory creaturesFactory;
+    private CreatureMapper creatureMapper;
 
     @RequestMapping("/tournaments")
     public String getTournaments() {
@@ -32,25 +31,25 @@ public class TournamentController {
 
     @RequestMapping(value = "/tournaments/{id}", method = RequestMethod.GET)
     public TournamentDto getTournament(@PathVariable("id") int id) throws MissingTournamentException {
-        TournamentEntity tournamentEntity = tournamentService.get(id);
+        Tournament tournament = tournamentService.getTournament(id);
 
         return new TournamentDto(
-            tournamentEntity.getId(),
-            tournamentEntity.getCapacity(),
-            tournamentEntity.getPoints()
+            tournament.getId(),
+            tournament.getCapacity(),
+            tournament.getPoints()
         );
     }
 
     @RequestMapping(value = "/tournaments", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
     public ResponseEntity createTournament(@RequestBody @Valid CreateTournamentDto createTournamentDto) {
 
-        TournamentEntity tournamentEntity = tournamentService.save(
+        int tournamentId = tournamentService.save(
             createTournamentDto.getCapacity(),
             createTournamentDto.getPoints()
         );
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/tournaments/" + tournamentEntity.getId()));
+        headers.setLocation(URI.create("/tournaments/" + tournamentId));
 
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
@@ -61,17 +60,7 @@ public class TournamentController {
             @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
     ) throws MissingTournamentException {
 
-        Creature creature = creaturesFactory.createCreature(
-            addCreatureToTournamentDto.getType(),
-            addCreatureToTournamentDto.getStrength(),
-            addCreatureToTournamentDto.getDexterity(),
-            addCreatureToTournamentDto.getInitiative(),
-            addCreatureToTournamentDto.getVelocity(),
-            addCreatureToTournamentDto.getEndurance(),
-            addCreatureToTournamentDto.getNumberOfAttacks(),
-            addCreatureToTournamentDto.getNumberOfDodges(),
-            addCreatureToTournamentDto.getLifePoints()
-        );
+        Creature creature = creatureMapper.map(addCreatureToTournamentDto);
 
         int creatureId = tournamentService.addCreature(tournamentId, creature);
 
