@@ -22,6 +22,9 @@ public class TournamentController {
     @Autowired
     private CreatureMapper creatureMapper;
 
+    @Autowired
+    private GeneralMapper generalMapper;
+
     @RequestMapping("/tournaments")
     public String getTournaments() {
 
@@ -33,11 +36,7 @@ public class TournamentController {
     public TournamentDto getTournament(@PathVariable("id") int id) throws MissingTournamentException {
         Tournament tournament = tournamentService.getTournament(id);
 
-        return new TournamentDto(
-            tournament.getId(),
-            tournament.getCapacity(),
-            tournament.getPoints()
-        );
+        return generalMapper.mapSimple(tournament, new TournamentDto());
     }
 
     @RequestMapping(value = "/tournaments", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")

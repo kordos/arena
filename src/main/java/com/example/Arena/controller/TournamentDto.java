@@ -1,18 +1,15 @@
 package com.example.Arena.controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import lombok.Value;
-
-@Value
-public class TournamentDto {
+@Getter
+@Setter
+@NoArgsConstructor
+class TournamentDto {
     private Integer id;
     private Integer capacity;
     private Integer points;
-
-    public TournamentDto(Integer id, Integer capacity, Integer points) {
-        this.id = id;
-        this.capacity = capacity;
-        this.points = points;
-    }
 }
 
