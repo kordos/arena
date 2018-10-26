@@ -2,7 +2,11 @@ package com.example.Arena.Service;
 
 import com.example.Arena.Creature;
 
+import java.util.List;
+
 public interface TournamentRepositoryInterface {
+
+    List<Tournament> getTournaments();
 
     Tournament getTournament(int id) throws MissingTournamentException;
 

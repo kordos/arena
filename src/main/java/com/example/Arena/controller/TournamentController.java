@@ -4,6 +4,7 @@ import com.example.Arena.Creature;
 import com.example.Arena.Service.MissingTournamentException;
 import com.example.Arena.Service.Tournament;
 import com.example.Arena.Service.TournamentService;
+import com.example.Arena.util.GeneralMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
 public class TournamentController {
@@ -26,10 +29,16 @@ public class TournamentController {
     private GeneralMapper generalMapper;
 
     @RequestMapping("/tournaments")
-    public String getTournaments() {
+    public List<TournamentDto> getTournaments() {
+        List<TournamentDto> tournamentDtos = new ArrayList<>();
 
-        //TODO implement
-        return "OK";
+        tournamentService.getTournaments()
+            .forEach(tournament -> tournamentDtos.add(
+                generalMapper.mapSimple(tournament, new TournamentDto())
+            )
+        );
+
+        return tournamentDtos;
     }
 
     @RequestMapping(value = "/tournaments/{id}", method = RequestMethod.GET)
@@ -55,8 +64,8 @@ public class TournamentController {
 
     @RequestMapping(value = "/tournaments/{id}/creatures", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
     public ResponseEntity addCreatureToTournament(
-            @PathVariable("id") int tournamentId,
-            @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
+        @PathVariable("id") int tournamentId,
+        @RequestBody @Valid AddCreatureToTournamentDto addCreatureToTournamentDto
     ) throws MissingTournamentException {
 
         Creature creature = creatureMapper.map(addCreatureToTournamentDto);

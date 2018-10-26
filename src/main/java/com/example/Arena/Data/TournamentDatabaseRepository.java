@@ -4,9 +4,12 @@ import com.example.Arena.Creature;
 import com.example.Arena.Service.MissingTournamentException;
 import com.example.Arena.Service.Tournament;
 import com.example.Arena.Service.TournamentRepositoryInterface;
+import com.example.Arena.util.GeneralMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,13 +21,29 @@ public class TournamentDatabaseRepository implements TournamentRepositoryInterfa
     @Autowired
     CreatureRepository creatureRepository;
 
-    public TournamentEntity get(int id) throws MissingTournamentException {
+    @Autowired
+    GeneralMapper generalMapper;
+
+    private TournamentEntity get(int id) throws MissingTournamentException {
         Optional result = tournamentRepository.findById(id);
         if (!result.isPresent()) {
             throw new MissingTournamentException("TournamentEntity does not exits!");
         }
 
         return (TournamentEntity)result.get();
+    }
+
+    @Override
+    public List<Tournament> getTournaments() {
+        List<Tournament> tournaments = new ArrayList<>();
+
+        tournamentRepository
+            .findAll()
+            .forEach(entity -> tournaments.add(
+                generalMapper.mapSimple(entity, new Tournament())
+            ));
+
+        return tournaments;
     }
 
     @Override
@@ -36,11 +55,7 @@ public class TournamentDatabaseRepository implements TournamentRepositoryInterfa
 
         TournamentEntity tournamentEntity = (TournamentEntity)result.get();
 
-        return new Tournament(
-            tournamentEntity.getId(),
-            tournamentEntity.getCapacity(),
-            tournamentEntity.getPoints()
-        );
+        return generalMapper.mapSimple(tournamentEntity, new Tournament());
     }
 
     @Override
@@ -58,25 +73,9 @@ public class TournamentDatabaseRepository implements TournamentRepositoryInterfa
     public int addCreature(int tournamentId, Creature creature) throws MissingTournamentException {
         TournamentEntity tournamentEntity = get(tournamentId);
 
-        //create entity
-        CreatureEntity creatureEntity = new CreatureEntity();
-        creatureEntity.setLifePoints(creature.getLifePoints());
-        creatureEntity.setStrength(creature.getStrength());
-        creatureEntity.setDexterity(creature.getDexterity());
-        creatureEntity.setInitiative(creature.getInitiative());
-        creatureEntity.setVelocity(creature.getVelocity());
-        creatureEntity.setEndurance(creature.getEndurance());
-        creatureEntity.setNumberOfAttacks(creature.getNumberOfAttacks());
-        creatureEntity.setNumberOfDodges(creature.getNumberOfDodges());
+        CreatureEntity creatureEntity = generalMapper.mapSimple(creature, new CreatureEntity());
         creatureEntity.setType(creature.getType().name());
-
-        // add creature to list
-        //v1 not passing id to creatureEntity object
-        //tournamentEntity.addCreature(creatureEntity);
-        //tournamentRepository.save(tournamentEntity);
-        //v2
         creatureEntity.setTournamentEntity(tournamentEntity);
-        creatureRepository.save(creatureEntity);
 
         creatureRepository.save(creatureEntity);
 
