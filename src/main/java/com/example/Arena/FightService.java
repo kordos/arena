@@ -1,7 +1,6 @@
 package com.example.Arena;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FightService {
     private Map<BodyPart, Integer> bodyPartHit = new HashMap<>();
@@ -70,5 +69,41 @@ public class FightService {
             }
         }
         System.out.println("Body part with most hit: " + hitMostBodyPart + ", count: " + hitMost);
+    }
+
+    List<List<Creature>> generatePairsForFight(List<Creature> creatureList) {
+
+        List<List<Creature>> result = new ArrayList<>();
+
+        Set<String> alreadyAddedSet = new HashSet<>();
+
+        for (Creature creature1 : creatureList) {
+            for (Creature creature2 : creatureList) {
+                if (creature1.getType().equals(creature2.getType())) {
+                    continue;
+                }
+                // different, check if added
+                String key1 = creature1.getType().toString() + creature1.getStrength() +  ":"
+                            + creature2.getType().toString() + creature2.getStrength();
+
+                String key2 = creature2.getType().toString() + creature2.getStrength() + ":"
+                            + creature1.getType().toString() + creature1.getStrength();
+
+
+                if (alreadyAddedSet.contains(key1) || alreadyAddedSet.contains(key2)) {
+                    continue;
+                }
+
+                // not added yet
+                List<Creature> pair = new ArrayList<>();
+                pair.add(creature1);
+                pair.add(creature2);
+
+                result.add(pair);
+                alreadyAddedSet.add(key1);
+            }
+        }
+
+        return result;
     }
 }
