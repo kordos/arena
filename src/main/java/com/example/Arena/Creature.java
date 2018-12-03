@@ -2,6 +2,7 @@ package com.example.Arena;
 
 import lombok.Getter;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -70,19 +71,21 @@ public abstract class Creature implements Fightable {
         int potentialDamage = 0;
         int attackCount = 1;
         BodyPart bodyPart;
+
         AttackResult attackResult = new AttackResult();
 
         int luckValue = random(1, 10);
 
         int bonus = 0;
         String bodyPartInfo = "None";
-        try {
-            bodyPart = getBodyPartForHit();
+
+        bodyPart = getBodyPartForHit().orElse(
+            getBodyPartForHit().orElse(null)
+        );
+        if (bodyPart != null) {
             bonus = bodyPart.getBonusPoints();
             attackResult.setBodyPart(bodyPart);
             bodyPartInfo = bodyPart.toString();
-        } catch (Exception e) {
-            // TODO try second time
         }
 
         String msgAttackInfo = "Body part: " + bodyPartInfo +
@@ -147,18 +150,18 @@ public abstract class Creature implements Fightable {
         System.out.println(text);
     }
 
-    private BodyPart getBodyPartForHit() throws Exception {
+    private Optional<BodyPart> getBodyPartForHit() {
         int number = random(1, 100);
 
         int sum = 0;
         for (BodyPart bodyPart : BodyPart.values()) {
             sum += bodyPart.getProbability();
             if (number <= sum) {
-                return bodyPart;
+                return Optional.of(bodyPart);
             }
         }
 
-        throw new Exception("No body part to hit");
+        return Optional.empty();
     }
 
     @Override
