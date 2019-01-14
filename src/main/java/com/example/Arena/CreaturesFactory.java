@@ -7,7 +7,7 @@ import java.util.*;
 @Component
 public class CreaturesFactory {
 
-    Creature generate(CreatureType type) {
+    public Creature generate(CreatureType type) {
 
         int strength = random(1, 10);
         int dexterity = random(1, 10);
@@ -69,7 +69,7 @@ public class CreaturesFactory {
         return generate(type);
     }
 
-    List<Creature> randomCreatureList(int listSize) {
+    public List<Creature> randomCreatureList(int listSize) {
 
         List<Creature> result = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
