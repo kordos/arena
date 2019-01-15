@@ -4,6 +4,7 @@ import com.example.Arena.Creature;
 import com.example.Arena.CreatureType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class LambdaExcercise {
 
@@ -28,6 +29,7 @@ class LambdaExcercise {
     Map<CreatureType, Set<Creature>> sortByCreatureType(List<Creature> creatures) {
         Map<CreatureType, Set<Creature>> creatureMap = new HashMap<>();
 
+        // old approach
         for (Creature creature : creatures) {
             Set<Creature> creatureList = new HashSet<>();
             if (creatureMap.containsKey(creature.getType())) {
@@ -37,6 +39,12 @@ class LambdaExcercise {
             creatureList.add(creature);
             creatureMap.put(creature.getType(), creatureList);
         }
+
+        // new approach: stream and lambda
+        creatureMap = creatures.stream()
+            .collect(
+                Collectors.groupingBy(Creature::getType, Collectors.toSet())
+            );
 
         return creatureMap;
     }
