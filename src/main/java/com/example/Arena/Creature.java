@@ -2,12 +2,13 @@ package com.example.Arena;
 
 import lombok.Getter;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 public abstract class Creature implements Fightable {
+    static private List usedNames = new ArrayList();
+
+    private String name;
     private Integer strength;
     private Integer dexterity;
     private Integer initiative;
@@ -32,6 +33,15 @@ public abstract class Creature implements Fightable {
         this.numberOfDodges = numberOfDodges;
         this.lifePoints = lifePoints;
         this.type = type;
+    }
+
+    public void setName(String name) throws IllegalArgumentException {
+        if (Creature.usedNames.contains(name)) {
+            throw new IllegalArgumentException("Provided name already exists!");
+        }
+
+        this.name = name;
+        Creature.usedNames.add(name);
     }
 
     public void setType(CreatureType type) {
@@ -170,6 +180,10 @@ public abstract class Creature implements Fightable {
     }
 
     private int getArmourProtection(BodyPart bodyPartToHit) {
+        if (armour == null || armour.size() == 0) {
+            return 0;
+        }
+
         // simple for implementation
         int protection = 0;
         for (ArmourType armourEntry : armour) {

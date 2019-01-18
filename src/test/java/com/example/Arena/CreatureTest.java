@@ -42,4 +42,23 @@ public class CreatureTest {
         assertTrue(dodgeResult.isSuccess());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetName_nameExists_throwsException() {
+        String name = "John";
+        CreaturesFactory creaturesFactory = new CreaturesFactory();
+
+        creaturesFactory.randomCreature().setName(name);
+        creaturesFactory.randomCreature().setName(name);
+    }
+
+    @Test
+    public void testSetName_nameNotExists_assignName() {
+        String name = "John";
+        CreaturesFactory creaturesFactory = new CreaturesFactory();
+        Creature creature = creaturesFactory.randomCreature();
+
+        creature.setName(name);
+        creaturesFactory.randomCreature().setName("Jan");
+        assertEquals(name, creature.getName());
+    }
 }
