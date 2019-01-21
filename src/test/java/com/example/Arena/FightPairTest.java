@@ -10,12 +10,15 @@ public class FightPairTest {
 
     @Test
     public void equals_samePairs_shouldReturnTrue() {
+        Creature creature1 = createCreature(CreatureType.DWARF, 10, 1);
+        Creature creature2 = createCreature(CreatureType.ELF, 10, 2);
 
-        Creature creature1 = creaturesFactory.generate(CreatureType.DWARF);
-        Creature creature2 = creaturesFactory.generate(CreatureType.ELF);
+        Creature creature3 = createCreature(CreatureType.DWARF, 10, 3);
+        Creature creature4 = createCreature(CreatureType.ELF, 10, 4);
+
         FightPair fightPair1 = new FightPair(creature1, creature2);
-        FightPair fightPair2 = new FightPair(creature1, creature2);
-        FightPair fightPair3 = new FightPair(creature2, creature1);
+        FightPair fightPair2 = new FightPair(creature2, creature1);
+        FightPair fightPair3 = new FightPair(creature3, creature4);
 
         assertTrue(fightPair1.equals(fightPair1));
         assertTrue(fightPair1.equals(fightPair2));
@@ -32,15 +35,14 @@ public class FightPairTest {
 
     @Test
     public void equals_differentPars_shouldReturnFalse() {
-
         FightPair fightPair1 = new FightPair(
-            creaturesFactory.generate(CreatureType.DWARF),
-            creaturesFactory.generate(CreatureType.ELF)
+            createCreature(CreatureType.DWARF, 10, 1),
+            createCreature(CreatureType.ELF, 10, 3)
         );
 
         FightPair fightPair2 = new FightPair(
-            creaturesFactory.generate(CreatureType.HUMAN),
-            creaturesFactory.generate(CreatureType.ELF)
+            createCreature(CreatureType.ELF, 9, 4),
+            createCreature(CreatureType.DWARF, 8, 6)
         );
 
         FightPair fightPair3 = new FightPair(
@@ -56,5 +58,11 @@ public class FightPairTest {
 
         assertFalse(fightPair3.equals(fightPair1));
         assertFalse(fightPair3.equals(fightPair2));
+    }
+
+    private Creature createCreature(CreatureType creatureType, int strength, int otherValues) {
+        return creaturesFactory.createCreature(
+                creatureType, strength, otherValues, otherValues, otherValues, otherValues, otherValues, otherValues, otherValues
+        );
     }
 }

@@ -2,6 +2,8 @@ package com.example.Arena;
 
 import lombok.Value;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Value
@@ -19,11 +21,18 @@ public class FightPair {
             return false;
 
         FightPair fightPair = (FightPair) o;
-        return  Objects.equals(creature1.getType(), fightPair.creature1.getType()) &&
-                Objects.equals(creature2.getType(), fightPair.creature2.getType())
+        return  Objects.equals(getFieldsToCompare(creature1), getFieldsToCompare(fightPair.creature1)) &&
+                Objects.equals(getFieldsToCompare(creature2), getFieldsToCompare(fightPair.creature2))
                 ||
-                Objects.equals(creature1.getType(), fightPair.creature2.getType()) &&
-                Objects.equals(creature2.getType(), fightPair.creature1.getType());
+                Objects.equals(getFieldsToCompare(creature1), getFieldsToCompare(fightPair.creature2)) &&
+                Objects.equals(getFieldsToCompare(creature2), getFieldsToCompare(fightPair.creature1));
+    }
+
+    private List<Object> getFieldsToCompare(Creature creature) {
+        return Arrays.asList(
+            creature.getType(),
+            creature.getStrength()
+        );
     }
 
     @Override
