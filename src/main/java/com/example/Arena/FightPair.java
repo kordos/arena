@@ -29,6 +29,7 @@ public class FightPair {
     }
 
     private List<Object> getFieldsToCompare(Creature creature) {
+        //todo check if both fields. maybe only type is required to compare pairs
         return Arrays.asList(
             creature.getType(),
             creature.getStrength()

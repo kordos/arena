@@ -2,6 +2,7 @@ package com.example.Arena;
 
 import org.junit.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,22 +23,16 @@ public class FightServiceTest {
 
     @Test
     public void testGeneratePairsForFight_PasTwoCreatures_ReturnOnePair() {
-
         Creature creature1 = creaturesFactory.generate(CreatureType.HUMAN);
         Creature creature2 = creaturesFactory.generate(CreatureType.ELF);
 
-        List<Creature> creatureList = new ArrayList<>();
-        creatureList.add(creature1);
-        creatureList.add(creature2);
-
+        List<Creature> creatureList = Arrays.asList(creature1, creature2, creature1, creature2);
 
         FightService fightService = new FightService();
+        List<FightPair> pairsToFight = fightService.generatePairsForFight(creatureList);
 
-        List<List<Creature>> pairsToFight = fightService.generatePairsForFight(creatureList);
-
-
-        List<List<Creature>> expectedResult = new ArrayList<>();
-        expectedResult.add(creatureList);
+        List<FightPair> expectedResult = new ArrayList<>();
+        expectedResult.add(new FightPair(creature1, creature2));
         assertTrue(pairsToFight.size() == 1);
         assertEquals(
             expectedResult,
@@ -59,8 +54,7 @@ public class FightServiceTest {
 
         FightService fightService = new FightService();
 
-        List<List<Creature>> pairsToFight = fightService.generatePairsForFight(creatureList);
-
+        List<FightPair> pairsToFight = fightService.generatePairsForFight(creatureList);
 
         int expectedCount = factorial(creatureList.size()) / (2 * factorial(creatureList.size() - 2));
 

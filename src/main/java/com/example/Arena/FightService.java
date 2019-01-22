@@ -8,7 +8,7 @@ public class FightService {
     private int strongestHit = 0;
     private String strongestHitInfo;
 
-    void fight(Creature creature1, Creature creature2) {
+    public void fight(Creature creature1, Creature creature2) {
         System.out.println("Fight between two creatures: ");
         System.out.println("creature1: " + creature1);
         System.out.println("creature2: " + creature2);
@@ -63,44 +63,28 @@ public class FightService {
         BodyPart hitMostBodyPart = null;
         for (Map.Entry bodyPartEntry : bodyPartHit.entrySet()) {
             System.out.println(bodyPartEntry.getKey() + ", hit count: " + bodyPartEntry.getValue());
-            if ((int)bodyPartEntry.getValue() > hitMost) {
-                hitMost = (int)bodyPartEntry.getValue();
+            if ((int) bodyPartEntry.getValue() > hitMost) {
+                hitMost = (int) bodyPartEntry.getValue();
                 hitMostBodyPart = (BodyPart) bodyPartEntry.getKey();
             }
         }
         System.out.println("Body part with most hit: " + hitMostBodyPart + ", count: " + hitMost);
     }
 
-    List<List<Creature>> generatePairsForFight(List<Creature> creatureList) {
-
-        List<List<Creature>> result = new ArrayList<>();
-
-        Set<String> alreadyAddedSet = new HashSet<>();
+    List<FightPair> generatePairsForFight(List<Creature> creatureList) {
+        List<FightPair> result = new ArrayList<>();
 
         for (Creature creature1 : creatureList) {
             for (Creature creature2 : creatureList) {
                 if (creature1.getType().equals(creature2.getType())) {
                     continue;
                 }
-                // different, check if added
-                String key1 = creature1.getType().toString() + creature1.getStrength() +  ":"
-                            + creature2.getType().toString() + creature2.getStrength();
 
-                String key2 = creature2.getType().toString() + creature2.getStrength() + ":"
-                            + creature1.getType().toString() + creature1.getStrength();
-
-
-                if (alreadyAddedSet.contains(key1) || alreadyAddedSet.contains(key2)) {
-                    continue;
+                // check if exist, add or continue
+                FightPair fightPair = new FightPair(creature1, creature2);
+                if (!result.contains(fightPair)) {
+                    result.add(fightPair);
                 }
-
-                // not added yet
-                List<Creature> pair = new ArrayList<>();
-                pair.add(creature1);
-                pair.add(creature2);
-
-                result.add(pair);
-                alreadyAddedSet.add(key1);
             }
         }
 
