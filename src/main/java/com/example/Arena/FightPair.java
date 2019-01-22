@@ -3,6 +3,7 @@ package com.example.Arena;
 import lombok.Value;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,10 +30,8 @@ public class FightPair {
     }
 
     private List<Object> getFieldsToCompare(Creature creature) {
-        //todo check if both fields. maybe only type is required to compare pairs
-        return Arrays.asList(
-            creature.getType(),
-            creature.getStrength()
+        return Collections.singletonList(
+            creature.getType()
         );
     }
 

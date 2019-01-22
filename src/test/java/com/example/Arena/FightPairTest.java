@@ -10,11 +10,11 @@ public class FightPairTest {
 
     @Test
     public void equals_samePairs_shouldReturnTrue() {
-        Creature creature1 = createCreature(CreatureType.DWARF, 10, 1);
-        Creature creature2 = createCreature(CreatureType.ELF, 10, 2);
+        Creature creature1 = createCreature(CreatureType.DWARF);
+        Creature creature2 = createCreature(CreatureType.ELF);
 
-        Creature creature3 = createCreature(CreatureType.DWARF, 10, 3);
-        Creature creature4 = createCreature(CreatureType.ELF, 10, 4);
+        Creature creature3 = createCreature(CreatureType.DWARF);
+        Creature creature4 = createCreature(CreatureType.ELF);
 
         FightPair fightPair1 = new FightPair(creature1, creature2);
         FightPair fightPair2 = new FightPair(creature2, creature1);
@@ -36,18 +36,18 @@ public class FightPairTest {
     @Test
     public void equals_differentPars_shouldReturnFalse() {
         FightPair fightPair1 = new FightPair(
-            createCreature(CreatureType.DWARF, 10, 1),
-            createCreature(CreatureType.ELF, 10, 3)
+            createCreature(CreatureType.DWARF),
+            createCreature(CreatureType.ELF)
         );
 
         FightPair fightPair2 = new FightPair(
-            createCreature(CreatureType.ELF, 9, 4),
-            createCreature(CreatureType.DWARF, 8, 6)
+            createCreature(CreatureType.HUMAN),
+            createCreature(CreatureType.DWARF)
         );
 
         FightPair fightPair3 = new FightPair(
-            creaturesFactory.generate(CreatureType.ELF),
-            creaturesFactory.generate(CreatureType.ORC)
+            createCreature(CreatureType.ELF),
+            createCreature(CreatureType.ORC)
         );
 
         assertFalse(fightPair1.equals(fightPair2));
@@ -60,9 +60,7 @@ public class FightPairTest {
         assertFalse(fightPair3.equals(fightPair2));
     }
 
-    private Creature createCreature(CreatureType creatureType, int strength, int otherValues) {
-        return creaturesFactory.createCreature(
-                creatureType, strength, otherValues, otherValues, otherValues, otherValues, otherValues, otherValues, otherValues
-        );
+    private Creature createCreature(CreatureType creatureType) {
+        return creaturesFactory.generate(creatureType);
     }
 }
