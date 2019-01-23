@@ -1,6 +1,6 @@
 package com.example.Arena.controller;
 
-import com.example.Arena.Creature;
+import com.example.Arena.creature.Creature;
 import com.example.Arena.Service.MissingTournamentException;
 import com.example.Arena.Service.Tournament;
 import com.example.Arena.Service.TournamentService;

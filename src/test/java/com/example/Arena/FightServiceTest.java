@@ -1,5 +1,8 @@
 package com.example.Arena;
 
+import com.example.Arena.creature.Creature;
+import com.example.Arena.creature.CreatureType;
+import com.example.Arena.creature.CreaturesFactory;
 import org.junit.*;
 import java.util.ArrayList;
 import java.util.Arrays;

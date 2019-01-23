@@ -1,4 +1,4 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
 public class Orc extends Creature {
 

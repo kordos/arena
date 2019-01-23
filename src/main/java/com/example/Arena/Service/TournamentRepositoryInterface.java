@@ -1,6 +1,6 @@
 package com.example.Arena.Service;
 
-import com.example.Arena.Creature;
+import com.example.Arena.creature.Creature;
 
 import java.util.List;
 

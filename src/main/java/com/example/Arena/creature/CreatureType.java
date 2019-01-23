@@ -1,4 +1,4 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
 public enum CreatureType {
     HUMAN,

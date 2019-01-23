@@ -1,7 +1,7 @@
 package com.example.Arena.controller;
 
-import com.example.Arena.Creature;
-import com.example.Arena.CreaturesFactory;
+import com.example.Arena.creature.Creature;
+import com.example.Arena.creature.CreaturesFactory;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,8 +1,8 @@
 package com.example.kata;
 
-import com.example.Arena.Creature;
-import com.example.Arena.CreatureType;
-import com.example.Arena.CreaturesFactory;
+import com.example.Arena.creature.Creature;
+import com.example.Arena.creature.CreatureType;
+import com.example.Arena.creature.CreaturesFactory;
 import org.junit.Test;
 
 import java.util.*;

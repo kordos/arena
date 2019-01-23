@@ -1,5 +1,8 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
+import com.example.Arena.AttackResult;
+import com.example.Arena.DodgeResult;
+import com.example.Arena.util.RandomUtil;
 import org.junit.*;
 import org.mockito.Mockito;
 import static org.junit.Assert.*;

@@ -1,5 +1,7 @@
 package com.example.Arena;
 
+import com.example.Arena.creature.Creature;
+
 import java.util.*;
 
 public class FightService {

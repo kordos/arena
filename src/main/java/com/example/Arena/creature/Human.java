@@ -1,4 +1,4 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
 public class Human extends Creature {
     public Human(Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {

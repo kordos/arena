@@ -1,5 +1,7 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
+import com.example.Arena.ArmourType;
+import com.example.Arena.creature.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -19,6 +21,13 @@ public class CreaturesFactory {
         int lifePoints = random(1, 10);
 
         return createCreature(type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+    }
+
+    public Creature generate(String name, CreatureType type) {
+        Creature creature = generate(type);
+        creature.setName(name);
+
+        return creature;
     }
 
     public Creature createCreature(CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
@@ -50,20 +59,27 @@ public class CreaturesFactory {
         return creature;
     }
 
-    CreatureType randomCreatureType() {
+    public Creature createCreature(String name, CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
+        Creature creature = createCreature(type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+        creature.setName(name);
+
+        return creature;
+    }
+
+    private CreatureType randomCreatureType() {
         Random r = new Random();
         CreatureType[] types = CreatureType.values();
 
         return types[r.nextInt(types.length)];
     }
 
-    int random(int min, int max) {
+    private int random(int min, int max) {
         Random r = new Random();
 
         return r.nextInt((max - min) + 1) + min;
     }
 
-    Creature randomCreature() {
+    public Creature randomCreature() {
         CreatureType type = randomCreatureType();
 
         return generate(type);

@@ -1,11 +1,9 @@
 package com.example.Arena;
 
+import com.example.Arena.creature.Creature;
+import com.example.Arena.creature.CreaturesFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 @SpringBootApplication
 public class ArenaApplication {

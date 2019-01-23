@@ -1,5 +1,7 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
+import com.example.Arena.*;
+import com.example.Arena.util.RandomUtil;
 import lombok.Getter;
 import java.util.*;
 
@@ -7,7 +9,7 @@ import java.util.*;
 public abstract class Creature implements Fightable {
     static private List usedNames = new ArrayList();
 
-    private String name;
+    private String name = "Unknown";
     private Integer strength;
     private Integer dexterity;
     private Integer initiative;

@@ -1,6 +1,6 @@
 package com.example.Arena.controller;
 
-import com.example.Arena.CreatureType;
+import com.example.Arena.creature.CreatureType;
 import lombok.Value;
 
 import javax.persistence.EnumType;

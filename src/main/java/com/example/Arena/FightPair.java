@@ -1,8 +1,8 @@
 package com.example.Arena;
 
+import com.example.Arena.creature.Creature;
 import lombok.Value;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

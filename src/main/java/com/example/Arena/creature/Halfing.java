@@ -1,4 +1,4 @@
-package com.example.Arena;
+package com.example.Arena.creature;
 
 public class Halfing extends Creature {
     public Halfing(Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
