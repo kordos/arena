@@ -7,7 +7,7 @@ import java.util.*;
 
 @Getter
 public abstract class Creature implements Fightable {
-    static private List usedNames = new ArrayList();
+    static private Set usedNames = new HashSet();
 
     private String name = "Unknown";
     private Integer strength;
@@ -24,7 +24,8 @@ public abstract class Creature implements Fightable {
 
     private Set<ArmourType> armour;
 
-    public Creature(Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints, CreatureType type) {
+    public Creature(String name, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints, CreatureType type) {
+        this.setName(name);
         this.strength = strength;
         this.dexterity = dexterity;
         this.initiative = initiative;
@@ -36,7 +37,7 @@ public abstract class Creature implements Fightable {
         this.type = type;
     }
 
-    public void setName(String name) throws IllegalArgumentException {
+    private void setName(String name) throws IllegalArgumentException {
         if (Creature.usedNames.contains(name)) {
             throw new IllegalArgumentException("Provided name already exists!");
         }

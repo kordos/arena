@@ -14,7 +14,7 @@ public class CreatureTest {
         int initiative = 2;
         int randomNumber = 5;
         int potentialDamage = 5;
-        Creature dodgingCreature = new Human(1,2, initiative,4,5,6,7,8);
+        Creature dodgingCreature = new Human("1", 1,2, initiative,4,5,6,7,8);
 
         RandomUtil randomUtil = Mockito.mock(RandomUtil.class);
         Mockito.when(randomUtil.random(1, 10)).thenReturn(randomNumber);
@@ -32,7 +32,7 @@ public class CreatureTest {
         int initiative = 10;
         int randomNumber = 5;
         int potentialDamage = 5;
-        Creature dodgingCreature = new Human(1,2, initiative,4,5,6,7,8);
+        Creature dodgingCreature = new Human("2", 1,2, initiative,4,5,6,7,8);
 
         RandomUtil randomUtil = Mockito.mock(RandomUtil.class);
         Mockito.when(randomUtil.random(1, 10)).thenReturn(randomNumber);
@@ -50,18 +50,17 @@ public class CreatureTest {
         String name = "John";
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
-        creaturesFactory.randomCreature().setName(name);
-        creaturesFactory.randomCreature().setName(name);
+        creaturesFactory.generate(name, CreatureType.ELF);
+        creaturesFactory.generate(name, CreatureType.DWARF);
     }
 
     @Test
     public void testSetName_nameNotExists_assignName() {
         String name = "John";
         CreaturesFactory creaturesFactory = new CreaturesFactory();
-        Creature creature = creaturesFactory.randomCreature();
+        Creature creature = creaturesFactory.generate(name, CreatureType.HUMAN);
 
-        creature.setName(name);
-        creaturesFactory.randomCreature().setName("Jan");
+        creaturesFactory.generate("Sam", CreatureType.HUMAN);
         assertEquals(name, creature.getName());
     }
 }

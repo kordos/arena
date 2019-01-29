@@ -16,17 +16,17 @@ public class LambdaExcerciseTest {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
         Creature creature1 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 1
+            "1", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 1
         );
         Creature creature2 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 2
+                "2", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 2
         );
 
         Creature creature3 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 3
+                "3", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 3
         );
         Creature creature4 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 4
+                "4", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 4
         );
 
         List<Creature> creatures = Arrays.asList(
@@ -69,17 +69,17 @@ public class LambdaExcerciseTest {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
         Creature creature1 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 1, 1, 1, 1, 1, 1, 1, 1
+            "1", CreatureType.DWARF, 1, 1, 1, 1, 1, 1, 1, 1
         );
         Creature creature2 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 2, 2, 2, 2, 2, 2, 2, 2
+                "2", CreatureType.DWARF, 2, 2, 2, 2, 2, 2, 2, 2
         );
 
         Creature creature3 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 3, 2, 2, 2, 2, 2, 2, 2
+                "3", CreatureType.DWARF, 3, 2, 2, 2, 2, 2, 2, 2
         );
         Creature creature4 = creaturesFactory.createCreature(
-            CreatureType.DWARF, 2, 4, 2, 2, 2, 2, 2, 2
+                "4", CreatureType.DWARF, 2, 4, 2, 2, 2, 2, 2, 2
         );
 
         List<Creature> creatures = Arrays.asList(

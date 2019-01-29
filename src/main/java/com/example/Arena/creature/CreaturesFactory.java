@@ -10,7 +10,15 @@ import java.util.*;
 public class CreaturesFactory {
 
     public Creature generate(CreatureType type) {
+        String name = "Unknown_" + random(1, 999999);
+        return generateCreature(name, type);
+    }
 
+    public Creature generate(String name, CreatureType type) {
+        return generateCreature(name, type);
+    }
+
+    private Creature generateCreature(String name, CreatureType type) {
         int strength = random(1, 10);
         int dexterity = random(1, 10);
         int initiative = random(1, 10);
@@ -20,48 +28,34 @@ public class CreaturesFactory {
         int numberOfDodges = random(1, 10);
         int lifePoints = random(1, 10);
 
-        return createCreature(type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+        return createCreature(name, type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
     }
 
-    public Creature generate(String name, CreatureType type) {
-        Creature creature = generate(type);
-        creature.setName(name);
-
-        return creature;
-    }
-
-    public Creature createCreature(CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
+    public Creature createCreature(String name, CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
         Creature creature = null;
 
         switch (type) {
             case ELF:
-                creature = new Elf(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Elf(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
             case DWARF:
-                creature = new Dwarf(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Dwarf(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
             case HALFING:
-                creature = new Halfing(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Halfing(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
             case ORC:
-                creature = new Orc(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Orc(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
             case TROLL:
-                creature = new Troll(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Troll(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
             case HUMAN:
-                creature = new Human(strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
+                creature = new Human(name, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
                 break;
         }
 
         creature.addArmour(generateArmour());
-
-        return creature;
-    }
-
-    public Creature createCreature(String name, CreatureType type, Integer strength, Integer dexterity, Integer initiative, Integer velocity, Integer endurance, Integer numberOfAttacks, Integer numberOfDodges, Integer lifePoints) {
-        Creature creature = createCreature(type, strength, dexterity, initiative, velocity, endurance, numberOfAttacks, numberOfDodges, lifePoints);
-        creature.setName(name);
 
         return creature;
     }

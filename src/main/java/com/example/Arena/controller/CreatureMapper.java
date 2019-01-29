@@ -15,6 +15,7 @@ public class CreatureMapper {
 
     Creature map(AddCreatureToTournamentDto addCreatureToTournamentDto) {
         return creaturesFactory.createCreature(
+                "Unknown", // todo add fiel
                 addCreatureToTournamentDto.getType(),
                 addCreatureToTournamentDto.getStrength(),
                 addCreatureToTournamentDto.getDexterity(),
