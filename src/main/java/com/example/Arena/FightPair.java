@@ -3,11 +3,12 @@ package com.example.Arena;
 import com.example.Arena.creature.Creature;
 import lombok.Value;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @Value
+//TODO add validation to constructor: can't fight when the same objects passed
 public class FightPair {
     private Creature creature1;
 
@@ -30,8 +31,9 @@ public class FightPair {
     }
 
     private List<Object> getFieldsToCompare(Creature creature) {
-        return Collections.singletonList(
-            creature.getType()
+        return Arrays.asList(
+            creature.getType(),
+            creature.getName()
         );
     }
 

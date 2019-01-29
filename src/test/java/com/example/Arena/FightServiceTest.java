@@ -6,6 +6,7 @@ import com.example.Arena.creature.CreaturesFactory;
 import org.junit.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -48,6 +49,11 @@ public class FightServiceTest {
     public void testGeneratePairsForFight_PasManyCreatures_ReturnsCorrectPair() {
 
         List<Creature> creatureList = new ArrayList<>();
+        Creature creature1 = creaturesFactory.generate(CreatureType.HUMAN);
+        creatureList.add(creature1);
+        creatureList.add(creature1);
+        creatureList.add(creature1);
+        creatureList.add(creature1);
         creatureList.add(creaturesFactory.generate(CreatureType.HUMAN));
         creatureList.add(creaturesFactory.generate(CreatureType.DWARF));
         creatureList.add(creaturesFactory.generate(CreatureType.ELF));
@@ -59,7 +65,8 @@ public class FightServiceTest {
 
         List<FightPair> pairsToFight = fightService.generatePairsForFight(creatureList);
 
-        int expectedCount = factorial(creatureList.size()) / (2 * factorial(creatureList.size() - 2));
+        int size = new HashSet<>(creatureList).size();
+        int expectedCount = factorial(size) / (2 * factorial(size - 2));
 
         assertTrue(pairsToFight.size() == expectedCount);
     }

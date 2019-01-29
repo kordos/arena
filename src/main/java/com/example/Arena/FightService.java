@@ -37,7 +37,7 @@ public class FightService {
                 break;
             }
         }
-
+        // fight result; fields: creature 1, creature 2, who win, statistics: rounds count, rounds info
         System.out.println("Round count: " + roundCount);
         printStatistics();
     }
@@ -78,7 +78,7 @@ public class FightService {
 
         for (Creature creature1 : creatureList) {
             for (Creature creature2 : creatureList) {
-                if (creature1.getType().equals(creature2.getType())) {
+                if (creature1.equals(creature2)) {
                     continue;
                 }
 
@@ -90,6 +90,25 @@ public class FightService {
             }
         }
 
+        // TODO rewrite using stream
+
         return result;
+    }
+
+    /**
+     * Every creature fight with another if have different creature type.
+     * Creature score 1 point for every win.
+     *
+     * TODO return some statistic about fights
+     */
+    void fightAll(List<Creature> creatures) {
+        List<FightPair> fightPairs = generatePairsForFight(creatures);
+
+        for (FightPair fightPair : fightPairs) {
+            // TODO defense copying or cloning?
+
+            //TODO returns fight result
+            fight(fightPair.getCreature1(), fightPair.getCreature2());
+        }
     }
 }
