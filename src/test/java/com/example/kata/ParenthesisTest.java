@@ -46,8 +46,8 @@ public class ParenthesisTest {
     private String testCase;
     private boolean result;
 
-    public ParenthesisTest(String tastCase, boolean result) {
-        this.testCase = tastCase;
+    public ParenthesisTest(String testCase, boolean result) {
+        this.testCase = testCase;
         this.result = result;
     }
 

@@ -65,7 +65,8 @@ public abstract class Creature implements Fightable {
     @Override
     public String toString() {
         return "CreatureEntity{" +
-                "strength=" + strength +
+                "name=" + name +
+                ", strength=" + strength +
                 ", dexterity=" + dexterity +
                 ", initiative=" + initiative +
                 ", velocity=" + velocity +

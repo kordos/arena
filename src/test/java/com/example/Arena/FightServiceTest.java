@@ -16,16 +16,6 @@ public class FightServiceTest {
     private CreaturesFactory creaturesFactory = new CreaturesFactory();
 
     @Test
-    public void test() {
-        System.out.println("x" == "x");
-        System.out.println(new String("x") == new String("x"));
-        System.out.println(new String("x").equals(new String("x")));
-        System.out.println(new String("x") == "x");
-        System.out.println(new Integer(7) == new Integer(7));
-        System.out.println(new Integer(7) == 7);
-    }
-
-    @Test
     public void testGeneratePairsForFight_PasTwoCreatures_ReturnOnePair() {
         Creature creature1 = creaturesFactory.generate(CreatureType.HUMAN);
         Creature creature2 = creaturesFactory.generate(CreatureType.ELF);

@@ -1,7 +1,6 @@
 package com.example.Arena.creature;
 
 import com.example.Arena.ArmourType;
-import com.example.Arena.creature.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
