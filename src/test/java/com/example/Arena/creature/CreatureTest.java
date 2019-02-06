@@ -44,7 +44,6 @@ public class CreatureTest {
 
     @Test
     public void testAttack_addBodyPartHitBonusToPotentialDamage_attackSuccess() {
-        // TODO check all body parts - parametrized test
         int addDamage = 2, bodyPartBonus = BodyPart.HEAD.getBonusPoints();
 
         when(randomUtil.random(1, 10)).thenReturn(creature.getDexterity() - 1);

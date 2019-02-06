@@ -1,5 +1,6 @@
 package com.example.Arena;
 
+//TODO AttackIntention seams better name
 public class AttackResult {
     private BodyPart bodyPart;
     private int potentialDamage;

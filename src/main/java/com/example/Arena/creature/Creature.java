@@ -81,36 +81,30 @@ public abstract class Creature implements Fightable {
 
     @Override
     public AttackResult attack() {
-        int potentialDamage = 0;
-        int attackCount = 1;
-        BodyPart bodyPart;
-
+        int potentialDamage = 0, attackCount = 1, bodyPartBonus = 0;
         AttackResult attackResult = new AttackResult();
-
-        int luckValue = random(1, 10);
-
-        int bonus = 0;
         String bodyPartInfo = "None";
 
-        bodyPart = getBodyPartForHit().orElse(
+        BodyPart bodyPart = getBodyPartForHit().orElse(
             getBodyPartForHit().orElse(null)
         );
         if (bodyPart != null) {
-            bonus = bodyPart.getBonusPoints();
+            bodyPartBonus = bodyPart.getBonusPoints();
             attackResult.setBodyPart(bodyPart);
             bodyPartInfo = bodyPart.toString();
         }
 
-        String msgAttackInfo = "Body part: " + bodyPartInfo +
-                ", Potential damage: " + potentialDamage +
-                ", attack count: " + attackCount;
+        int luckValue = random(1, 10);
         if (getDexterity() > luckValue) {
-            potentialDamage = getStrength() + random(0, 3) + bonus;
-
-            displayText("Attack ended with success. " + msgAttackInfo);
-        } else {
-            displayText("Attack ended with failure. " + msgAttackInfo);
+            potentialDamage = getStrength() + random(0, 3) + bodyPartBonus;
         }
+
+        displayText(
+            "Attack details: " +
+            "Body part: " + bodyPartInfo +
+            ", Potential damage: " + potentialDamage +
+            ", attack count: " + attackCount
+        );
 
         attackResult.setAttackCount(attackCount);
         attackResult.setPotentialDamage(potentialDamage);
