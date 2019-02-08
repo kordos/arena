@@ -1,12 +1,19 @@
 package com.example.Arena.creature;
 
 import com.example.Arena.ArmourType;
+import com.example.Arena.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class CreaturesFactory {
+
+    private RandomUtil randomUtil;
+
+    void setRandomUtil(RandomUtil randomUtil) {
+        this.randomUtil = randomUtil;
+    }
 
     public Creature generate(CreatureType type) {
         String name = "Unknown_" + random(1, 999999);
@@ -67,15 +74,16 @@ public class CreaturesFactory {
     }
 
     private int random(int min, int max) {
-        Random r = new Random();
+        if (randomUtil == null) {
+            Random r = new Random();
+            return r.nextInt((max - min) + 1) + min;
+        }
 
-        return r.nextInt((max - min) + 1) + min;
+        return randomUtil.random(min, max);
     }
 
     public Creature randomCreature() {
-        CreatureType type = randomCreatureType();
-
-        return generate(type);
+        return generate(randomCreatureType());
     }
 
     public List<Creature> randomCreatureList(int listSize) {
@@ -95,14 +103,8 @@ public class CreaturesFactory {
         HashSet<ArmourType> result = new HashSet<>();
 
         int armourCount = random(armourMinNumber, armourMaxNumber);
-        for (int i = 0; i < armourCount; i++) {
+        while (result.size() < armourCount) {
             int armourNumber = random(0, armourMaxNumber - 1);
-
-            if (result.contains(armourTypes[armourNumber])) {
-                armourCount ++;
-                continue;
-            }
-
             result.add(armourTypes[armourNumber]);
         }
 

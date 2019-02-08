@@ -81,6 +81,7 @@ public abstract class Creature implements Fightable {
 
     @Override
     public AttackResult attack() {
+        //TODO check if current attack flow is correct with lessons description
         int potentialDamage = 0, attackCount = 1, bodyPartBonus = 0;
         AttackResult attackResult = new AttackResult();
         String bodyPartInfo = "None";
@@ -96,6 +97,7 @@ public abstract class Creature implements Fightable {
 
         int luckValue = random(1, 10);
         if (getDexterity() > luckValue) {
+            // TODO maybe only here should be getting body part to attack and setting attack intention as true?
             potentialDamage = getStrength() + random(0, 3) + bodyPartBonus;
         }
 
@@ -123,7 +125,7 @@ public abstract class Creature implements Fightable {
             displayText("Dodge ended with success.");
         } else {
             result.setSuccess(false);
-            // get armour number
+            // get armour protection
             int armourProtection = getArmourProtection(attackResult.getBodyPart());
             int actualDamage = potentialDamage > 0 ? potentialDamage - getEndurance() - armourProtection : 0;
 
@@ -136,7 +138,7 @@ public abstract class Creature implements Fightable {
                 "Dodge ended with failure. Armour protection: " + armourProtection + ", Damage: " + actualDamage +
                 ". Life points left: " + lifePoints
             );
-            if (lifePoints <= 0) {
+            if (!isAlive()) {
                 displayText("CreatureEntity DEAD!!!");
             }
         }
