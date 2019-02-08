@@ -16,7 +16,7 @@ public class CreaturesFactory {
     }
 
     public Creature generate(CreatureType type) {
-        String name = "Unknown_" + random(1, 999999);
+        String name = "Unknown_" + random(10000, Integer.MAX_VALUE);
         return generateCreature(name, type);
     }
 

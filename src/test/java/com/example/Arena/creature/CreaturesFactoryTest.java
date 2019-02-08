@@ -1,13 +1,28 @@
 package com.example.Arena.creature;
 
+import com.example.Arena.ArmourType;
+import com.example.Arena.util.RandomUtil;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
-//TODO test with generated armour set
 public class CreaturesFactoryTest {
 
-    private CreaturesFactory creaturesFactory = new CreaturesFactory();
+    private CreaturesFactory creaturesFactory;
+    private RandomUtil randomUtil;
+
+    @Before
+    public void beforeEachTest() {
+        randomUtil = Mockito.mock(RandomUtil.class);
+        creaturesFactory = new CreaturesFactory();
+    }
 
     @Test
     public void generateCreatureByType() {
@@ -69,11 +84,33 @@ public class CreaturesFactoryTest {
 
     @Test
     public void randomCreature() {
-        fail();
+        Creature creature = creaturesFactory.randomCreature();
+        assertTrue(Arrays.asList(CreatureType.values()).contains(creature.getType()));
+        assertCreatureFields(creature);
+    }
+
+
+    @Test
+    public void randomCreature_checkGeneratingArmourCount_SetProperArmourCount() {
+        creaturesFactory.setRandomUtil(randomUtil);
+        when(randomUtil.random(0, ArmourType.values().length - 1)).thenCallRealMethod();
+        when(randomUtil.random(10000, Integer.MAX_VALUE)).thenCallRealMethod();
+
+        for (int i = 0; i < ArmourType.values().length; i++) {
+            when(randomUtil.random(0, ArmourType.values().length)).thenReturn(i);
+
+            Creature creature = creaturesFactory.randomCreature();
+            assertEquals(creature.getArmour().size(), i);
+        }
     }
 
     @Test
     public void randomCreatureList() {
-        fail();
+        Random r = new Random();
+        int listSize = r.nextInt(20) + 5;
+
+        List<Creature> creatures = creaturesFactory.randomCreatureList(listSize);
+        assertEquals(creatures.size(), listSize);
+        creatures.forEach(this::assertCreatureFields);
     }
 }

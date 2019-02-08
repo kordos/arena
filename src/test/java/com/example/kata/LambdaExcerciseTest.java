@@ -16,17 +16,17 @@ public class LambdaExcerciseTest {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
         Creature creature1 = creaturesFactory.createCreature(
-            "1", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 1
+            "11111", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 1
         );
         Creature creature2 = creaturesFactory.createCreature(
-                "2", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 2
+            "22222", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 2
         );
 
         Creature creature3 = creaturesFactory.createCreature(
-                "3", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 3
+            "33333", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 3
         );
         Creature creature4 = creaturesFactory.createCreature(
-                "4", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 4
+            "44444", CreatureType.DWARF, 1, 2, 3, 4, 5, 6, 8, 4
         );
 
         List<Creature> creatures = Arrays.asList(
@@ -60,8 +60,6 @@ public class LambdaExcerciseTest {
 
         assertEquals(creatures.size(), sortedCreatures.size());
         assertTrue(creatures.equals(sortedCreatures));
-
-        //lambdaExcercise.displayCreatures(sortedCreatures);
     }
 
     @Test
@@ -69,17 +67,17 @@ public class LambdaExcerciseTest {
         CreaturesFactory creaturesFactory = new CreaturesFactory();
 
         Creature creature1 = creaturesFactory.createCreature(
-            "1", CreatureType.DWARF, 1, 1, 1, 1, 1, 1, 1, 1
+            "111", CreatureType.DWARF, 1, 1, 1, 1, 1, 1, 1, 1
         );
         Creature creature2 = creaturesFactory.createCreature(
-                "2", CreatureType.DWARF, 2, 2, 2, 2, 2, 2, 2, 2
+            "222", CreatureType.DWARF, 2, 2, 2, 2, 2, 2, 2, 2
         );
 
         Creature creature3 = creaturesFactory.createCreature(
-                "3", CreatureType.DWARF, 3, 2, 2, 2, 2, 2, 2, 2
+            "333", CreatureType.DWARF, 3, 2, 2, 2, 2, 2, 2, 2
         );
         Creature creature4 = creaturesFactory.createCreature(
-                "4", CreatureType.DWARF, 2, 4, 2, 2, 2, 2, 2, 2
+            "444", CreatureType.DWARF, 2, 4, 2, 2, 2, 2, 2, 2
         );
 
         List<Creature> creatures = Arrays.asList(
