@@ -4,6 +4,7 @@ import com.example.Arena.creature.Creature;
 import com.example.Arena.creature.CreatureType;
 import com.example.Arena.creature.CreaturesFactory;
 import org.junit.*;
+import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,6 +16,8 @@ public class FightServiceTest {
 
     private CreaturesFactory creaturesFactory = new CreaturesFactory();
 
+    private FightService fightService = new FightService();
+
     @Test
     public void testGeneratePairsForFight_PasTwoCreatures_ReturnOnePair() {
         Creature creature1 = creaturesFactory.generate(CreatureType.HUMAN);
@@ -22,18 +25,16 @@ public class FightServiceTest {
 
         List<Creature> creatureList = Arrays.asList(creature1, creature2, creature1, creature2);
 
-        FightService fightService = new FightService();
         List<FightPair> pairsToFight = fightService.generatePairsForFight(creatureList);
 
         List<FightPair> expectedResult = new ArrayList<>();
         expectedResult.add(new FightPair(creature1, creature2));
-        assertTrue(pairsToFight.size() == 1);
+        assertEquals(1, pairsToFight.size());
         assertEquals(
             expectedResult,
             pairsToFight
         );
     }
-
 
     @Test
     public void testGeneratePairsForFight_PasManyCreatures_ReturnsCorrectPair() {
@@ -51,14 +52,12 @@ public class FightServiceTest {
         creatureList.add(creaturesFactory.generate(CreatureType.ORC));
         creatureList.add(creaturesFactory.generate(CreatureType.TROLL));
 
-        FightService fightService = new FightService();
-
         List<FightPair> pairsToFight = fightService.generatePairsForFight(creatureList);
 
         int size = new HashSet<>(creatureList).size();
         int expectedCount = factorial(size) / (2 * factorial(size - 2));
 
-        assertTrue(pairsToFight.size() == expectedCount);
+        assertEquals(pairsToFight.size(), expectedCount);
     }
 
     private int factorial(int number) {
@@ -68,5 +67,64 @@ public class FightServiceTest {
         }
 
         return result;
+    }
+
+    @Test
+    public void testFight_creatureOneWinsInFirstRound_shouldFinishFightAndReturnResult() {
+        Creature creature1Mock = Mockito.mock(Creature.class);
+        Creature creature2Mock = Mockito.mock(Creature.class);
+
+        // 1 attacks 2; 2 loses
+        AttackResult attackResult = new AttackResult(BodyPart.HEAD, 10, 1);
+        Mockito.when(creature1Mock.attack()).thenReturn(attackResult);
+        Mockito.when(creature1Mock.isAlive()).thenReturn(true);
+
+        DodgeResult dodgeResult = new DodgeResult();
+        dodgeResult.setSuccess(false);
+        dodgeResult.setDamage(10);
+        Mockito.when(creature2Mock.dodge(attackResult)).thenReturn(dodgeResult);
+
+        Mockito.when(creature2Mock.isAlive()).thenReturn(false);
+        Mockito.when(creature2Mock.attack()).thenThrow(RuntimeException.class);
+
+        FightResult fightResult = fightService.fight(creature1Mock, creature2Mock);
+        assertEquals(1, fightResult.getRoundCount());
+        assertEquals(creature1Mock, fightResult.getWinner());
+        // todo any other checks?
+    }
+
+    @Test
+    public void testFight_creatureTwoWinsInFirstRound_shouldFinishFightAndReturnResult() {
+        Creature creature1Mock = Mockito.mock(Creature.class);
+        Creature creature2Mock = Mockito.mock(Creature.class);
+
+        // 1 attacks 2
+        AttackResult attackResult = new AttackResult(BodyPart.HEAD, 10, 1);
+        Mockito.when(creature1Mock.attack()).thenReturn(attackResult);
+
+        DodgeResult dodgeResult = new DodgeResult();
+        dodgeResult.setSuccess(false);
+        dodgeResult.setDamage(2);
+        Mockito.when(creature2Mock.dodge(attackResult)).thenReturn(dodgeResult);
+        Mockito.when(creature2Mock.isAlive()).thenReturn(true);
+
+        // 2 attacks 1; 1 loses
+        AttackResult attackResult2 = new AttackResult(BodyPart.TRUNK, 8, 1);
+        Mockito.when(creature2Mock.attack()).thenReturn(attackResult2);
+
+        DodgeResult dodgeResult2 = new DodgeResult();
+        dodgeResult.setSuccess(false);
+        dodgeResult.setDamage(7);
+        Mockito.when(creature1Mock.dodge(attackResult2)).thenReturn(dodgeResult2);
+        Mockito.when(creature1Mock.isAlive()).thenReturn(false);
+
+        FightResult fightResult = fightService.fight(creature1Mock, creature2Mock);
+        assertEquals(1, fightResult.getRoundCount());
+        assertEquals(creature2Mock, fightResult.getWinner());
+    }
+
+    @Test
+    public void testFight_creaturesFightManyRounds_returnStatistics() {
+        fail();
     }
 }

@@ -10,7 +10,7 @@ public class FightService {
     private int strongestHit = 0;
     private String strongestHitInfo;
 
-    public void fight(Creature creature1, Creature creature2) {
+    public FightResult fight(Creature creature1, Creature creature2) {
         System.out.println("Fight between two creatures: ");
         System.out.println("creature1: " + creature1);
         System.out.println("creature2: " + creature2);
@@ -24,7 +24,7 @@ public class FightService {
             attackResult = creature1.attack();
             dodgeResult = creature2.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature1);
-            if (creature2.getLifePoints() <= 0) {
+            if (!creature2.isAlive()) {
                 System.out.println("CreatureEntity 1 won");
                 break;
             }
@@ -32,7 +32,7 @@ public class FightService {
             attackResult = creature2.attack();
             dodgeResult = creature1.dodge(attackResult);
             updateStatistics(attackResult, dodgeResult, creature2);
-            if (creature1.getLifePoints() <= 0) {
+            if (!creature1.isAlive()) {
                 System.out.println("CreatureEntity 2 won");
                 break;
             }
@@ -40,6 +40,8 @@ public class FightService {
         // fight result; fields: creature 1, creature 2, who win, statistics: rounds count, rounds info
         System.out.println("Round count: " + roundCount);
         printStatistics();
+
+        return new FightResult(creature1, creature2, roundCount);
     }
 
     private void updateStatistics(AttackResult attackResult, DodgeResult dodgeResult, Creature attackingCreature) {
