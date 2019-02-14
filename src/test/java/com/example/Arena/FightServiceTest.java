@@ -75,16 +75,9 @@ public class FightServiceTest {
         Creature creature2Mock = Mockito.mock(Creature.class);
 
         // 1 attacks 2; 2 loses
-        AttackResult attackResult = new AttackResult(BodyPart.HEAD, 10, 1);
-        Mockito.when(creature1Mock.attack()).thenReturn(attackResult);
+        mockCreatureAttackAndDodge(creature1Mock, creature2Mock, false);
         Mockito.when(creature1Mock.isAlive()).thenReturn(true);
 
-        DodgeResult dodgeResult = new DodgeResult();
-        dodgeResult.setSuccess(false);
-        dodgeResult.setDamage(10);
-        Mockito.when(creature2Mock.dodge(attackResult)).thenReturn(dodgeResult);
-
-        Mockito.when(creature2Mock.isAlive()).thenReturn(false);
         Mockito.when(creature2Mock.attack()).thenThrow(RuntimeException.class);
 
         FightResult fightResult = fightService.fight(creature1Mock, creature2Mock);
@@ -99,16 +92,43 @@ public class FightServiceTest {
         Creature creature2Mock = Mockito.mock(Creature.class);
 
         // 1 attacks 2
+        mockCreatureAttackAndDodge(creature1Mock, creature2Mock, true);
+
+        // 2 attacks 1; 1 loses
+        mockCreatureAttackAndDodge(creature2Mock, creature1Mock, false);
+
+        FightResult fightResult = fightService.fight(creature1Mock, creature2Mock);
+        assertEquals(1, fightResult.getRoundCount());
+        assertEquals(creature2Mock, fightResult.getWinner());
+    }
+
+    private void mockCreatureAttackAndDodge(Creature creature1Mock, Creature creature2Mock, boolean isAlive)
+    {
         AttackResult attackResult = new AttackResult(BodyPart.HEAD, 10, 1);
         Mockito.when(creature1Mock.attack()).thenReturn(attackResult);
 
         DodgeResult dodgeResult = new DodgeResult();
         dodgeResult.setSuccess(false);
-        dodgeResult.setDamage(2);
+        dodgeResult.setDamage(5);
         Mockito.when(creature2Mock.dodge(attackResult)).thenReturn(dodgeResult);
-        Mockito.when(creature2Mock.isAlive()).thenReturn(true);
+        Mockito.when(creature2Mock.isAlive()).thenReturn(isAlive);
+    }
 
-        // 2 attacks 1; 1 loses
+    @Test
+    public void testFight_creaturesFightManyRounds_returnStatistics() {
+        Creature creature1Mock = Mockito.mock(Creature.class);
+        Creature creature2Mock = Mockito.mock(Creature.class);
+
+        AttackResult attackResult = new AttackResult(BodyPart.HEAD, 10, 1);
+        Mockito.when(creature1Mock.attack()).thenReturn(attackResult);
+
+        DodgeResult dodgeResult = new DodgeResult();
+        dodgeResult.setSuccess(false);
+        dodgeResult.setDamage(5);
+        Mockito.when(creature2Mock.dodge(attackResult)).thenReturn(dodgeResult);
+        Mockito.when(creature2Mock.isAlive()).thenReturn(true, true, true, true, true, true);
+
+
         AttackResult attackResult2 = new AttackResult(BodyPart.TRUNK, 8, 1);
         Mockito.when(creature2Mock.attack()).thenReturn(attackResult2);
 
@@ -116,15 +136,10 @@ public class FightServiceTest {
         dodgeResult.setSuccess(false);
         dodgeResult.setDamage(7);
         Mockito.when(creature1Mock.dodge(attackResult2)).thenReturn(dodgeResult2);
-        Mockito.when(creature1Mock.isAlive()).thenReturn(false);
+        Mockito.when(creature1Mock.isAlive()).thenReturn(true, true, true, true, true, false);
 
         FightResult fightResult = fightService.fight(creature1Mock, creature2Mock);
-        assertEquals(1, fightResult.getRoundCount());
+        assertEquals(6, fightResult.getRoundCount());
         assertEquals(creature2Mock, fightResult.getWinner());
-    }
-
-    @Test
-    public void testFight_creaturesFightManyRounds_returnStatistics() {
-        fail();
     }
 }
